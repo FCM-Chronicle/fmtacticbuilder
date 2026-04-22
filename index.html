@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>FM26 전술 빌더</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --p0:#07021a;--p1:#0f0728;--p2:#180e3d;--p3:#251660;--p4:#3a2280;
+  --p5:#5535a8;--p6:#7a52d0;--p7:#a87fe8;--p8:#d4b8ff;
+  --acc:#f5c842;--acc2:#00e8b8;--red:#f04060;--grn:#22d47a;
+  --border:rgba(90,50,160,.45);--border2:rgba(120,80,200,.6);
+  --glass:rgba(37,22,96,.55);--r:8px;--r2:5px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--p0);color:#e0d0ff;font-family:'Noto Sans KR',sans-serif;font-size:13px;display:flex;flex-direction:column;}
+
+nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--border2);display:flex;align-items:center;padding:0 8px;flex-shrink:0;z-index:200;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--acc);letter-spacing:3px;text-shadow:0 0 24px rgba(245,200,66,.45);margin-right:10px;flex-shrink:0;}
+.logo em{color:var(--p7);font-style:normal;}
+.nav-tabs{display:flex;flex:1;overflow-x:auto;scrollbar-width:none;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.ntab{padding:0 13px;height:48px;border:none;background:transparent;color:var(--p7);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2.5px solid transparent;transition:all .15s;}
+.ntab:hover{color:#e0d0ff;}
+.ntab.on{color:var(--acc);border-bottom-color:var(--acc);}
+.nav-right{display:flex;gap:6px;flex-shrink:0;margin-left:8px;}
+.ibtn{height:32px;padding:0 12px;border-radius:var(--r2);border:1.5px solid var(--border2);background:var(--glass);color:#e0d0ff;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.ibtn:hover{border-color:var(--p6);color:var(--acc);}
+.ibtn.acc{background:var(--acc);color:#07021a;border-color:var(--acc);font-weight:700;}
+.ibtn.acc:hover{background:#ffd840;}
+
+.screen{display:none;flex:1;overflow:hidden;flex-direction:column;}
+.screen.on{display:flex;}
+
+/* ── FORMATION ── */
+#s-formation{flex-direction:column;}
+
+.fm-phase-tabs{display:flex;height:40px;background:var(--p1);border-bottom:1.5px solid var(--border);flex-shrink:0;}
+.fptab{flex:1;border:none;background:transparent;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.fptab.ip-tab{color:var(--acc2);}
+.fptab.ip-tab:hover{color:#e0d0ff;}
+.fptab.ip-tab.on{color:var(--acc2);border-bottom-color:var(--acc2);background:rgba(0,232,184,.06);}
+.fptab.oop-tab{color:var(--red);}
+.fptab.oop-tab:hover{color:#e0d0ff;}
+.fptab.oop-tab.on{color:var(--red);border-bottom-color:var(--red);background:rgba(240,64,96,.06);}
+
+/* 모드 전환 버튼 스타일 */
+.mode-toggle { display:flex; padding:8px 12px; background:var(--p1); gap:8px; border-bottom:1px solid var(--border); flex-shrink:0; }
+.mode-btn { flex:1; padding:8px; border-radius:var(--r2); border:1.5px solid var(--border); background:var(--p2); color:var(--p7); font-weight:700; cursor:pointer; font-family:'Noto Sans KR',sans-serif; font-size:13px; transition:all .15s; }
+.mode-btn.on { background:var(--acc); color:#000; border-color:var(--acc); }
+
+.fm-phase{display:none;flex:1;overflow:hidden;flex-direction:row;}
+.fm-phase.on{display:flex;}
+
+.pitch-area{flex:1;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;background:var(--p0);position:relative;}
+.pitch-wrap{position:relative;width:min(320px,calc(100vw - 32px));aspect-ratio:68/105;}
+.pitch-svg{position:absolute;inset:0;width:100%;height:100%;}
+
+#slotsLayerIP,#tokensLayerIP,#slotsLayerOOP,#tokensLayerOOP{position:absolute;inset:0;pointer-events:none;}
+#slotsLayerIP,#slotsLayerOOP{pointer-events:all;}
+
+.slot{position:absolute;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;border:2px dashed rgba(90,53,168,.3);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;z-index:1;}
+.slot:hover{border-color:rgba(168,127,232,.55);background:rgba(90,53,168,.18);}
+.slot.has-player{border-color:transparent;background:transparent;}
+.slot.drag-over{border-color:var(--acc2)!important;background:rgba(0,232,184,.22)!important;border-style:solid!important;border-width:2.5px!important;}
+.slot-hint{font-family:'Barlow Condensed',sans-serif;font-size:9px;color:rgba(120,80,200,.4);letter-spacing:.5px;font-weight:600;pointer-events:none;text-align:center;}
+
+.token{position:absolute;transform:translate(-50%,-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:2px;touch-action:none;user-select:none;pointer-events:all;}
+.token-circle{width:40px;height:40px;border-radius:50%;background:var(--p4);border:2.5px solid var(--p6);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:#e0d0ff;line-height:1.1;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.6);transition:border-color .15s,box-shadow .15s,transform .1s;user-select:none;cursor:pointer;}
+.token.gk .token-circle{background:#7c3a06;border-color:#f5a623;}
+.token:hover .token-circle{border-color:var(--acc);transform:scale(1.08);}
+.token.selected .token-circle{border-color:var(--acc);box-shadow:0 0 0 3px rgba(245,200,66,.3),0 2px 16px rgba(0,0,0,.7);}
+.token.dragging .token-circle{opacity:.5;cursor:grabbing;}
+.pos-abbr{font-size:10px;font-weight:800;pointer-events:none;}
+.role-badge{font-size:7px;opacity:.8;pointer-events:none;}
+.ip-color{color:var(--acc2);}
+.oop-color{color:var(--red);}
+.token-name{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;color:#fff;text-shadow:0 1px 4px #000,0 0 8px rgba(0,0,0,.9);white-space:nowrap;pointer-events:none;max-width:70px;overflow:hidden;text-overflow:ellipsis;}
+.token-role{font-family:'Barlow Condensed',sans-serif;font-size:8px;color:var(--p8);text-shadow:0 1px 3px #000;white-space:nowrap;pointer-events:none;max-width:70px;overflow:hidden;text-overflow:ellipsis;}
+
+/* PLAYER EDITOR */
+.ped{position:absolute;bottom:0;left:0;right:0;background:rgba(8,3,22,.98);border-top:1.5px solid var(--border2);padding:12px 14px 14px;transform:translateY(100%);transition:transform .22s ease;z-index:50;max-height:80%;overflow-y:auto;}
+.ped.open{transform:translateY(0);}
+.ped-close{position:absolute;top:10px;right:12px;background:transparent;border:none;color:var(--p7);font-size:18px;cursor:pointer;padding:4px;z-index:51;}
+.ped-close:hover{color:var(--acc);}
+.ped-field{display:flex;flex-direction:column;gap:3px;min-width:130px;flex:1;}
+.ped-label{font-size:10px;font-weight:700;color:var(--p7);text-transform:uppercase;letter-spacing:1px;}
+.ped-label.ip{color:var(--acc2);}
+.ped-label.oop{color:var(--red);}
+.ped-select,.ped-input{padding:6px 10px;background:var(--p1);border:1.5px solid var(--border);border-radius:var(--r2);color:#e0d0ff;font-size:12px;font-family:'Noto Sans KR',sans-serif;outline:none;width:100%;}
+.ped-select:focus,.ped-input:focus{border-color:var(--p6);}
+.pi-sec{margin-top:8px;}
+.pi-sec-label{font-size:10px;font-weight:700;color:var(--p7);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.pi-sec-label.ip{color:var(--acc2);}
+.pi-sec-label.oop{color:var(--red);}
+.pi-chips{display:flex;flex-wrap:wrap;gap:3px;}
+.pichip{padding:3px 8px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--p7);font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .12s;}
+.pichip:hover{border-color:var(--p6);color:#e0d0ff;}
+.pichip.on{background:var(--p3);border-color:var(--p6);color:#e0d0ff;}
+.pichip.forced{background:rgba(245,200,66,.12);border-color:var(--acc);color:var(--acc);cursor:default;}
+.pichip.locked{opacity:.25;cursor:not-allowed;text-decoration:line-through;}
+.forced-line{font-size:11px;color:var(--acc);margin-bottom:4px;line-height:1.8;}
+.locked-line{font-size:11px;color:var(--red);margin-bottom:6px;line-height:1.8;}
+
+/* ── SETUP TAB (Formation + Mentality) ── */
+#s-setup{flex-direction:column;overflow-y:auto;}
+.setup-content{padding:16px;max-width:900px;margin:0 auto;width:100%;}
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:600px){.setup-grid{grid-template-columns:1fr;}}
+.card{background:var(--p1);border:1.5px solid var(--border);border-radius:var(--r);padding:13px;}
+.card-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--p8);letter-spacing:.5px;margin-bottom:9px;display:flex;align-items:center;gap:5px;}
+.tname-inp{width:100%;padding:7px 10px;background:var(--p0);border:1.5px solid var(--border);border-radius:var(--r2);color:#e0d0ff;font-size:12px;font-family:'Noto Sans KR',sans-serif;outline:none;}
+.tname-inp:focus{border-color:var(--p6);}
+.preset-grid-setup{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.pbtn{padding:6px 4px;border-radius:var(--r2);border:1.5px solid var(--border);background:transparent;color:var(--p7);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all .14s;}
+.pbtn:hover{border-color:var(--p6);color:#e0d0ff;}
+.pbtn.on{background:var(--p3);border-color:var(--acc);color:var(--acc);}
+.mrow{display:flex;flex-wrap:wrap;gap:5px;}
+.mchip{padding:6px 12px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--p7);font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .13s;}
+.mchip:hover{border-color:var(--p6);color:#e0d0ff;}
+.mchip.on{background:var(--p3);border-color:var(--p6);color:#e0d0ff;}
+.sec-header{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--p7);text-transform:uppercase;padding:8px 0 6px;border-bottom:1px solid var(--border);margin-bottom:10px;}
+.phase-label{display:flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;margin-bottom:8px;}
+.phase-label.ip{color:var(--acc2);}
+.phase-label.oop{color:var(--red);}
+
+/* ── TEAM INSTRUCTIONS ── */
+#s-instructions{flex-direction:column;}
+.ti-tabbar{display:flex;height:44px;background:var(--p1);border-bottom:1.5px solid var(--border);flex-shrink:0;}
+.titab{flex:1;border:none;background:transparent;color:var(--p7);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;}
+.titab:hover{color:#e0d0ff;}
+.titab.on{color:var(--acc);border-bottom-color:var(--acc);}
+.ti-panels{flex:1;overflow:hidden;}
+.ti-panel{display:none;height:100%;overflow-y:auto;padding:14px;}
+.ti-panel.on{display:block;}
+.ti-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.card-sub{font-size:10px;color:var(--p7);margin-bottom:6px;font-style:italic;}
+.chips{display:flex;flex-wrap:wrap;gap:4px;}
+.chip{padding:5px 11px;border-radius:14px;border:1.5px solid var(--border);background:transparent;color:var(--p7);font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .13s;}
+.chip:hover{border-color:var(--p6);color:#e0d0ff;}
+.chip.on{background:var(--p3);border-color:var(--p6);color:#e0d0ff;}
+.sld-wrap{display:flex;align-items:center;gap:8px;}
+.sld-wrap input[type=range]{flex:1;height:4px;padding:0;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:2px;border:none;cursor:pointer;}
+.sld-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--p6);border:2px solid var(--acc);cursor:pointer;}
+.sld-val{min-width:20px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--acc);}
+.sld-lbl{font-size:10px;color:var(--p7);white-space:nowrap;}
+.tip{background:rgba(0,232,184,.07);border:1px solid rgba(0,232,184,.25);border-radius:var(--r2);padding:9px 12px;font-size:12px;color:var(--acc2);line-height:1.6;margin-top:8px;}
+.warn{background:rgba(245,200,66,.07);border:1px solid rgba(245,200,66,.25);border-radius:var(--r2);padding:9px 12px;font-size:12px;color:var(--acc);line-height:1.6;margin-top:10px;}
+
+/* ── SETPIECE & REF & SAVES ── (기존과 동일하게 유지) */
+#s-setpiece,#s-reference,#s-saves{overflow-y:auto;}
+.sp-content,.ref-content,.saves-wrap{padding:14px;max-width:900px;margin:0 auto;width:100%;}
+.sptabs{display:flex;gap:0;margin-bottom:14px;border-bottom:1.5px solid var(--border);}
+.sptab{padding:8px 14px;border:none;background:transparent;color:var(--p7);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;transition:all .15s;}
+.sptab:hover{color:#e0d0ff;}
+.sptab.on{color:var(--acc);border-bottom-color:var(--acc);}
+.sp-panel{display:none;}
+.sp-panel.on{display:block;}
+.sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
+.rtable{width:100%;border-collapse:collapse;font-size:12px;}
+.rtable th{background:var(--p2);color:var(--p8);padding:8px 12px;text-align:left;font-weight:700;border-bottom:2px solid var(--border2);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;font-size:11px;text-transform:uppercase;}
+.rtable td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.rtable tr:hover td{background:rgba(37,22,96,.35);}
+.rtable .group-row td{background:var(--p2);color:var(--p7);font-weight:700;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;}
+.saves-card{background:var(--p1);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;}
+.saves-card h2{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--p8);margin-bottom:12px;}
+.save-item{background:var(--p2);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 13px;margin-bottom:7px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:border-color .15s;}
+.save-item:hover{border-color:var(--p6);}
+.si-info{flex:1;}
+.si-name{font-weight:600;font-size:14px;}
+.si-meta{font-size:11px;color:var(--p7);margin-top:1px;}
+.empty-msg{text-align:center;color:var(--p7);padding:40px;font-size:13px;}
+
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--grn);color:#07021a;padding:10px 22px;border-radius:24px;font-size:13px;font-weight:700;z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.5);font-family:'Noto Sans KR',sans-serif;}
+#toast.show{opacity:1;}
+
+@media(max-width:480px){
+  .fm-phase{flex-direction:column;}
+  .pitch-wrap{width:min(280px,90vw);}
+}
+@media(max-width:420px){.ntab{font-size:12px;padding:0 9px;}}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--p0);}
+::-webkit-scrollbar-thumb{background:var(--p3);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">FM<em>26</em></div>
+  <div class="nav-tabs">
+    <button class="ntab on"  onclick="goScreen('setup',this)">⚙️ 설정</button>
+    <button class="ntab"     onclick="goScreen('formation',this)">⚽ 포메이션</button>
+    <button class="ntab"     onclick="goScreen('instructions',this)">🎯 팀 지침</button>
+    <button class="ntab"     onclick="goScreen('setpiece',this)">🔄 세트피스</button>
+    <button class="ntab"     onclick="goScreen('reference',this)">📖 참고서</button>
+    <button class="ntab"     onclick="goScreen('saves',this)">💾 저장함</button>
+  </div>
+  <div class="nav-right">
+    <button class="ibtn" onclick="doExportJSON()">⬇ JSON</button>
+    <button class="ibtn acc" onclick="doSave()">💾 저장</button>
+  </div>
+</nav>
+
+<div id="s-setup" class="screen on">
+  <div class="setup-content">
+    <div class="sec-header">⚙️ 전술 기본 설정</div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-title">📝 전술 이름</div>
+      <input class="tname-inp" id="tacticName" value="나의 전술" placeholder="전술 이름">
+    </div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-title">🧠 멘탈리티</div>
+      <div class="mrow" id="mentalityRow"></div>
+    </div>
+    <div class="setup-grid">
+      <div class="card">
+        <div class="card-title"><span class="phase-label ip">⚽ 공 소유 시 포메이션</span></div>
+        <div class="preset-grid-setup" id="presetGridIP"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="phase-label oop">🛡 공 미소유 시 포메이션</span></div>
+        <div class="preset-grid-setup" id="presetGridOOP"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="s-formation" class="screen">
+  <div class="fm-phase-tabs">
+    <button class="fptab ip-tab on" id="fptab-ip" onclick="switchPhase('ip')">⚽ 공 소유 시</button>
+    <button class="fptab oop-tab"   id="fptab-oop" onclick="switchPhase('oop')">🛡 공 미소유 시</button>
+  </div>
+  
+  <div class="mode-toggle">
+    <button class="mode-btn on" onclick="setInteractionMode('edit', this)">👆 역할 설정 (터치)</button>
+    <button class="mode-btn" onclick="setInteractionMode('drag', this)">✋ 이동 (드래그)</button>
+  </div>
+
+  <div class="fm-phase on" id="phase-ip">
+    <div class="pitch-area" id="pitchAreaIP">
+      <div class="pitch-wrap" id="pitchWrapIP">
+        <svg class="pitch-svg" viewBox="0 0 320 496" preserveAspectRatio="none">
+          <defs><linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1c5c1c"/><stop offset="100%" stop-color="#1a501a"/></linearGradient></defs>
+          <rect width="320" height="496" rx="6" fill="url(#grass)"/>
+          <rect x="0" y="0"   width="320" height="46" fill="rgba(0,0,0,.06)"/>
+          <rect x="0" y="92"  width="320" height="46" fill="rgba(0,0,0,.06)"/>
+          <rect x="0" y="184" width="320" height="46" fill="rgba(0,0,0,.06)"/>
+          <rect x="0" y="276" width="320" height="46" fill="rgba(0,0,0,.06)"/>
+          <rect x="0" y="368" width="320" height="46" fill="rgba(0,0,0,.06)"/>
+          <rect x="0" y="460" width="320" height="46" fill="rgba(0,0,0,.06)"/>
+          <rect x="12" y="12" width="296" height="472" stroke="rgba(255,255,255,.22)" stroke-width="1.5" fill="none" rx="2"/>
+          <line x1="12" y1="248" x2="308" y2="248" stroke="rgba(255,255,255,.22)" stroke-width="1.5"/>
+          <circle cx="160" cy="248" r="40" stroke="rgba(255,255,255,.2)" stroke-width="1.5" fill="none"/>
+          <circle cx="160" cy="248" r="3" fill="rgba(255,255,255,.28)"/>
+          <rect x="84"  y="12"  width="152" height="76" stroke="rgba(255,255,255,.18)" stroke-width="1" fill="none"/>
+          <rect x="118" y="12"  width="84"  height="28" stroke="rgba(255,255,255,.18)" stroke-width="1" fill="none"/>
+          <rect x="84"  y="408" width="152" height="76" stroke="rgba(255,255,255,.18)" stroke-width="1" fill="none"/>
+          <rect x="118" y="456" width="84"  height="28" stroke="rgba(255,255,255,.18)" stroke-width="1" fill="none"/>
+        </svg>
+        <div id="slotsLayerIP"></div>
+        <div id="tokensLayerIP"></div>
+      </div>
+      <div class="ped" id="playerEditorIP"><button class="ped-close" id="pedCloseIP">✕</button><div id="pedContentIP"></div></div>
+    </div>
+  </div>
+
+  <div class="fm-phase" id="phase-oop">
+    <div class="pitch-area" id="pitchAreaOOP">
+      <div class="pitch-wrap" id="pitchWrapOOP">
+        <svg class="pitch-svg" viewBox="0 0 320 496" preserveAspectRatio="none">
+          <defs><linearGradient id="grass2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1a3c"/><stop offset="100%" stop-color="#16163a"/></linearGradient></defs>
+          <rect width="320" height="496" rx="6" fill="url(#grass2)"/>
+          <rect x="0" y="0"   width="320" height="46" fill="rgba(0,0,0,.08)"/>
+          <rect x="0" y="92"  width="320" height="46" fill="rgba(0,0,0,.08)"/>
+          <rect x="0" y="184" width="320" height="46" fill="rgba(0,0,0,.08)"/>
+          <rect x="0" y="276" width="320" height="46" fill="rgba(0,0,0,.08)"/>
+          <rect x="0" y="368" width="320" height="46" fill="rgba(0,0,0,.08)"/>
+          <rect x="0" y="460" width="320" height="46" fill="rgba(0,0,0,.08)"/>
+          <rect x="12" y="12" width="296" height="472" stroke="rgba(240,64,96,.3)" stroke-width="1.5" fill="none" rx="2"/>
+          <line x1="12" y1="248" x2="308" y2="248" stroke="rgba(240,64,96,.25)" stroke-width="1.5"/>
+          <circle cx="160" cy="248" r="40" stroke="rgba(240,64,96,.22)" stroke-width="1.5" fill="none"/>
+          <circle cx="160" cy="248" r="3" fill="rgba(240,64,96,.4)"/>
+          <rect x="84"  y="12"  width="152" height="76" stroke="rgba(240,64,96,.18)" stroke-width="1" fill="none"/>
+          <rect x="118" y="12"  width="84"  height="28" stroke="rgba(240,64,96,.18)" stroke-width="1" fill="none"/>
+          <rect x="84"  y="408" width="152" height="76" stroke="rgba(240,64,96,.18)" stroke-width="1" fill="none"/>
+          <rect x="118" y="456" width="84"  height="28" stroke="rgba(240,64,96,.18)" stroke-width="1" fill="none"/>
+        </svg>
+        <div id="slotsLayerOOP"></div>
+        <div id="tokensLayerOOP"></div>
+      </div>
+      <div class="ped" id="playerEditorOOP"><button class="ped-close" id="pedCloseOOP">✕</button><div id="pedContentOOP"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ════════════════════════ DATA ════════════════════════ */
+const SLOT_GRID = [
+  ['ST', 10, ['LST','ST','RST']],
+  ['AM', 24, ['AML','LCAM','CAM','RCAM','AMR']],
+  ['M',  38, ['LM','LCM','CM','RCM','RM']],
+  ['DM', 55, ['WBL','LDMC','DMC','RDMC','WBR']],
+  ['DF', 72, ['LB','LCB','CB','RCB','RB']],
+  ['GK', 88, ['GK']],
+];
+const COL_X = { 1:[50], 3:[20,50,80], 5:[8,27,50,73,92] };
+function buildSlots() {
+  const out = [];
+  SLOT_GRID.forEach(([row,y,slots]) => {
+    const xs = COL_X[slots.length];
+    slots.forEach((id,i) => out.push({id,row,x:xs[i],y}));
+  });
+  return out;
+}
+const SLOTS = buildSlots();
+
+// ✨ 유저 요청: "이상한 역할들 말고 근본 FM 역할로 통일!"
+const STANDARD_ROLES = {
+  GK:['골키퍼 (GK)','스위퍼 키퍼 (SK)'],
+  LB:['풀백 (FB)','윙백 (WB)','인버티드 풀백 (IFB)','인버티드 윙백 (IWB)'],
+  LCB:['중앙 수비수 (CB)','볼 플레잉 디펜더 (BPD)','노넌센스 CB (NCB)','리베로 (Lib)'],
+  CB:['중앙 수비수 (CB)','볼 플레잉 디펜더 (BPD)','노넌센스 CB (NCB)','리베로 (Lib)'],
+  RCB:['중앙 수비수 (CB)','볼 플레잉 디펜더 (BPD)','노넌센스 CB (NCB)','리베로 (Lib)'],
+  RB:['풀백 (FB)','윙백 (WB)','인버티드 풀백 (IFB)','인버티드 윙백 (IWB)'],
+  WBL:['윙백 (WB)','인버티드 윙백 (IWB)','컴플리트 윙백 (CWB)'],
+  LDMC:['수비형 MF (DM)','딥 라잉 플레이메이커 (DLP)','볼 위닝 MF (BWM)','하프백 (HB)','앵커맨 (A)','세군도 볼란테 (SV)'],
+  DMC:['수비형 MF (DM)','딥 라잉 플레이메이커 (DLP)','볼 위닝 MF (BWM)','하프백 (HB)','앵커맨 (A)','레지스타 (Reg)','로밍 플레이메이커 (RP)'],
+  RDMC:['수비형 MF (DM)','딥 라잉 플레이메이커 (DLP)','볼 위닝 MF (BWM)','하프백 (HB)','앵커맨 (A)','세군도 볼란테 (SV)'],
+  WBR:['윙백 (WB)','인버티드 윙백 (IWB)','컴플리트 윙백 (CWB)'],
+  LM:['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','와이드 플레이메이커 (WP)'],
+  LCM:['센트럴 MF (CM)','박스 투 박스 (BBM)','메짤라 (Mez)','어드밴스드 플레이메이커 (AP)','볼 위닝 MF (BWM)'],
+  CM:['센트럴 MF (CM)','박스 투 박스 (BBM)','메짤라 (Mez)','딥 라잉 플레이메이커 (DLP)','어드밴스드 플레이메이커 (AP)'],
+  RCM:['센트럴 MF (CM)','박스 투 박스 (BBM)','메짤라 (Mez)','어드밴스드 플레이메이커 (AP)','볼 위닝 MF (BWM)'],
+  RM:['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','와이드 플레이메이커 (WP)'],
+  AML:['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','라움도이터 (RD)'],
+  LCAM:['공격형 MF (AM)','섀도 스트라이커 (SS)','어드밴스드 플레이메이커 (AP)'],
+  CAM:['공격형 MF (AM)','섀도 스트라이커 (SS)','어드밴스드 플레이메이커 (AP)','엔간체 (EG)'],
+  RCAM:['공격형 MF (AM)','섀도 스트라이커 (SS)','어드밴스드 플레이메이커 (AP)'],
+  AMR:['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','라움도이터 (RD)'],
+  LST:['어드밴스드 포워드 (AF)','포처 (P)','타겟 포워드 (TF)','딥 라잉 포워드 (DLF)','프레싱 포워드 (PF)','컴플리트 포워드 (CF)','팔스 나인 (F9)'],
+  ST:['어드밴스드 포워드 (AF)','포처 (P)','타겟 포워드 (TF)','딥 라잉 포워드 (DLF)','프레싱 포워드 (PF)','컴플리트 포워드 (CF)','팔스 나인 (F9)'],
+  RST:['어드밴스드 포워드 (AF)','포처 (P)','타겟 포워드 (TF)','딥 라잉 포워드 (DLF)','프레싱 포워드 (PF)','컴플리트 포워드 (CF)','팔스 나인 (F9)'],
+};
+
+// IP와 OOP 모두 근본 역할로 통일
+const ROLES_IP = STANDARD_ROLES;
+const ROLES_OOP = STANDARD_ROLES;
+
+const ROLE_DATA = [
+  {r:'골키퍼 (GK)',          f:['포지션 유지'], l:['드리블 자주','넓게 위치']},
+  {r:'스위퍼 키퍼 (SK)',     f:['위험한 패스'], l:[]},
+  {r:'중앙 수비수 (CB)',      f:[], l:[]},
+  {r:'볼 플레잉 디펜더 (BPD)',f:['위험한 패스'], l:['안전하게 패스']},
+  {r:'노넌센스 CB (NCB)',     f:['다이렉트 패스','안전하게 패스'], l:['위험한 패스','드리블']},
+  {r:'리베로 (Lib)',          f:['앞으로 전진'], l:[]},
+  {r:'풀백 (FB)',             f:[], l:[]},
+  {r:'윙백 (WB)',             f:['앞으로 전진'], l:[]},
+  {r:'인버티드 풀백 (IFB)',   f:['좁게 위치','자리에 머물기'], l:['넓게 위치','앞으로 전진']},
+  {r:'인버티드 윙백 (IWB)',   f:['좁게 위치','중앙으로 컷인'], l:['외곽 돌파']},
+  {r:'수비형 MF (DM)',        f:['자리에 머물기'], l:[]},
+  {r:'딥 라잉 플레이메이커 (DLP)',f:['자리에 머물기','플레이메이커 지정'], l:['포지션 자유']},
+  {r:'어드밴스드 플레이메이커 (AP)',f:['위험한 패스','플레이메이커 지정'], l:[]},
+  {r:'박스 투 박스 (BBM)',    f:['포지션 자유'], l:['자리에 머물기']},
+  {r:'센트럴 MF (CM)',        f:[], l:[]},
+  {r:'메짤라 (Mez)',          f:['넓게 위치','측면 침투'], l:['좁게 위치','자리에 머물기']},
+  {r:'윙어 (W)',              f:['넓게 위치','외곽 돌파'], l:['좁게 위치','중앙 컷인']},
+  {r:'인사이드 포워드 (IF)',  f:['중앙으로 컷인'], l:['외곽 돌파']},
+  {r:'어드밴스드 포워드 (AF)',f:['측면 침투'], l:['수비 라인으로 내려오기']},
+  {r:'포처 (P)',              f:['크로스 적게','드리블 적게'], l:['포지션 자유']},
+];
+
+const MENTALITIES = ['매우 수비적','수비적','균형','긍정적','공격적','매우 공격적'];
+
+const PRESETS = {
+  '4-3-3':   {DF:['LB','LCB','RCB','RB'], DM:[], M:['LCM','CM','RCM'], AM:['AML','AMR'], ST:['ST']},
+  '4-2-3-1': {DF:['LB','LCB','RCB','RB'], DM:['LDMC','RDMC'], M:[], AM:['AML','CAM','AMR'], ST:['ST']}
+};
+
+const PI_CATS_IP = {
+  '패스':        ['더 짧은 패스','다이렉트 패스','위험한 패스 감수','안전하게 패스'],
+  '위치·이동':   ['앞으로 전진','자리에 머물기','포지션 자유','중앙으로 컷인','측면 침투'],
+};
+const PI_CATS_OOP = PI_CATS_IP; // 근본 역할 통일로 지침도 통일
+
+const NAMES = {
+  GK:'골키퍼', LB:'좌측 FB', LCB:'좌측 CB', CB:'센터백', RCB:'우측 CB', RB:'우측 FB',
+  LDMC:'좌측 DM', DMC:'중앙 DM', RDMC:'우측 DM',
+  LM:'좌측 MF', LCM:'좌측 CM', CM:'중앙 MF', RCM:'우측 CM', RM:'우측 MF',
+  AML:'LW', CAM:'공격 MF', AMR:'RW', ST:'스트라이커'
+};
+
+/* ════════ STATE ════════ */
+let state = {
+  ip:  { formation:'4-3-3', players:{} },
+  oop: { formation:'4-3-3', players:{} },
+  mentality: '균형',
+};
+let currentPhase = 'ip';
+let selSlot = { ip:null, oop:null };
+
+// ✨ 터치/드래그 모드 분리
+let interactMode = 'edit'; // 'edit' 또는 'drag'
+
+/* ════════ INIT ════════ */
+window.addEventListener('load', () => {
+  buildPresets(); buildMentality();
+  applyPreset('4-3-3', 'ip'); applyPreset('4-3-3', 'oop');
+  document.getElementById('pedCloseIP').addEventListener('click',  () => { selSlot.ip  = null; closeEditor('ip');  renderPitch('ip'); });
+  document.getElementById('pedCloseOOP').addEventListener('click', () => { selSlot.oop = null; closeEditor('oop'); renderPitch('oop'); });
+});
+
+/* ════════ MODE TOGGLE ════════ */
+function setInteractionMode(mode, btn) {
+  interactMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  
+  // 모든 토큰의 draggable 속성을 모드에 맞게 업데이트
+  document.querySelectorAll('.token').forEach(tk => {
+    tk.draggable = (mode === 'drag');
+  });
+  
+  // 편집 창 닫기 및 선택 해제
+  selSlot.ip = null; selSlot.oop = null;
+  closeEditor('ip'); closeEditor('oop');
+  renderPitch('ip'); renderPitch('oop');
+}
+
+function switchPhase(phase) {
+  currentPhase = phase;
+  document.getElementById('fptab-ip').classList.toggle('on',  phase === 'ip');
+  document.getElementById('fptab-oop').classList.toggle('on', phase === 'oop');
+  document.getElementById('phase-ip').classList.toggle('on',  phase === 'ip');
+  document.getElementById('phase-oop').classList.toggle('on', phase === 'oop');
+}
+
+function buildPresets() {
+  ['ip','oop'].forEach(phase => {
+    const g = document.getElementById('presetGrid' + (phase === 'ip' ? 'IP' : 'OOP'));
+    Object.keys(PRESETS).forEach(f => {
+      const b = document.createElement('button');
+      b.className = 'pbtn' + (f === state[phase].formation ? ' on' : '');
+      b.textContent = f;
+      b.addEventListener('click', () => applyPreset(f, phase));
+      g.appendChild(b);
+    });
+  });
+}
+
+function applyPreset(name, phase) {
+  state[phase].formation = name;
+  const pre = PRESETS[name];
+  const np = {};
+  np['GK'] = state[phase].players['GK'] || {name:'골키퍼', role:'골키퍼 (GK)', pi:{}};
+  for (const [row, ids] of Object.entries(pre)) {
+    ids.forEach(id => { 
+      const rolesList = STANDARD_ROLES[id] || ['기본'];
+      np[id] = state[phase].players[id] || { name: NAMES[id]||id, role: rolesList[0], pi: {} }; 
+    });
+  }
+  state[phase].players = np;
+  selSlot[phase] = null;
+  closeEditor(phase);
+  renderPitch(phase);
+}
+
+function buildMentality() {
+  const row = document.getElementById('mentalityRow');
+  MENTALITIES.forEach(m => {
+    const b = document.createElement('button');
+    b.className = 'mchip' + (m === state.mentality ? ' on' : '');
+    b.textContent = m;
+    b.addEventListener('click', () => { state.mentality = m; document.querySelectorAll('.mchip').forEach(x => x.classList.toggle('on', x.textContent === m)); });
+    row.appendChild(b);
+  });
+}
+
+function getPlayerName(slotId) {
+  if (state.ip.players[slotId]) return state.ip.players[slotId].name;
+  if (state.oop.players[slotId]) return state.oop.players[slotId].name;
+  return slotId;
+}
+
+/* ════════ PITCH RENDER & EVENTS ════════ */
+function renderPitch(phase) {
+  const suffix = phase === 'ip' ? 'IP' : 'OOP';
+  const SL = document.getElementById('slotsLayer' + suffix);
+  const TL = document.getElementById('tokensLayer' + suffix);
+  SL.innerHTML = ''; TL.innerHTML = '';
+  const phaseState = state[phase];
+
+  // 슬롯 렌더링
+  SLOTS.forEach(def => {
+    const hasP = !!phaseState.players[def.id];
+    const slot = document.createElement('div');
+    slot.className = 'slot' + (hasP ? ' has-player' : '');
+    slot.style.left = def.x + '%'; slot.style.top = def.y + '%';
+    slot.dataset.slot = def.id;
+    
+    // 데스크탑 드래그 이벤트 (모드가 드래그일때만)
+    slot.addEventListener('dragover', e => { if(interactMode==='drag'){ e.preventDefault(); slot.classList.add('drag-over'); }});
+    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+    slot.addEventListener('drop', e => { if(interactMode==='drag'){ e.preventDefault(); slot.classList.remove('drag-over'); handleDrop(def.id, phase); }});
+    SL.appendChild(slot);
+  });
+
+  // 토큰 렌더링
+  Object.entries(phaseState.players).forEach(([sid, p]) => {
+    const def = SLOTS.find(d => d.id === sid);
+    if (!def) return;
+
+    const tk = document.createElement('div');
+    tk.className = 'token' + (selSlot[phase] === sid ? ' selected' : '');
+    tk.style.left = def.x + '%'; tk.style.top = def.y + '%';
+    tk.draggable = (interactMode === 'drag'); // 설정된 모드에 따라 결정
+    
+    const roleShort = (p.role || '').match(/\(([^)]+)\)/);
+    
+    tk.innerHTML = `
+      <div class="token-circle">
+        <div class="pos-abbr">${sid}</div>
+        <div class="role-badge ${phase==='ip'?'ip-color':'oop-color'}">${roleShort ? roleShort[1] : ''}</div>
+      </div>
+      <div class="token-name">${phase === 'ip' ? p.name : getPlayerName(sid)}</div>
+      <div class="token-role">${p.role || ''}</div>
+    `;
+
+    // 1. 데스크탑 클릭 이벤트
+    tk.addEventListener('click', e => {
+      if (interactMode === 'drag') return;
+      e.stopPropagation();
+      handleTokenClick(sid, phase);
+    });
+
+    // 2. 데스크탑 드래그 이벤트
+    tk.addEventListener('dragstart', e => {
+      if (interactMode !== 'drag') { e.preventDefault(); return; }
+      dragSrc = sid;
+      e.dataTransfer.setData('text/plain', sid);
+      setTimeout(() => tk.classList.add('dragging'), 0);
+    });
+    tk.addEventListener('dragend', () => {
+      if (interactMode !== 'drag') return;
+      dragSrc = null;
+      document.querySelectorAll('.slot.drag-over').forEach(s => s.classList.remove('drag-over'));
+      renderPitch(phase);
+    });
+
+    // 3. 모바일 터치 이벤트 (역할/드래그 충돌 완벽 해결)
+    let tActive = false, tStartX = 0, tStartY = 0;
+    
+    tk.addEventListener('touchstart', e => {
+      if (interactMode === 'edit') return; // 편집 모드면 드래그 로직 무시
+      tActive = true; dragSrc = sid;
+      const t = e.touches[0];
+      tStartX = t.clientX; tStartY = t.clientY;
+      tk.classList.add('dragging');
+    }, {passive:true});
+
+    tk.addEventListener('touchmove', e => {
+      if (interactMode === 'edit' || !tActive) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      document.querySelectorAll('.slot').forEach(s => s.classList.remove('drag-over'));
+      const nearest = findNearestSlot(t.clientX, t.clientY, 44);
+      if (nearest) nearest.classList.add('drag-over');
+    }, {passive:false});
+
+    tk.addEventListener('touchend', e => {
+      // 편집 모드일 때: 터치가 끝나면 곧바로 창 열기 (클릭과 동일)
+      if (interactMode === 'edit') {
+        e.preventDefault(); // 기본 클릭 이벤트가 두 번 터지는 것 방지
+        e.stopPropagation();
+        handleTokenClick(sid, phase);
+        return;
+      }
+      
+      // 드래그 모드일 때: 드롭 처리
+      if (!tActive) return;
+      tActive = false;
+      tk.classList.remove('dragging');
+      document.querySelectorAll('.slot.drag-over').forEach(s => s.classList.remove('drag-over'));
+      const t = e.changedTouches[0];
+      const nearest = findNearestSlot(t.clientX, t.clientY, 50);
+      if (nearest) handleDrop(nearest.dataset.slot, phase);
+      dragSrc = null;
+      renderPitch(phase);
+    });
+
+    TL.appendChild(tk);
+  });
+}
+
+// 클릭/터치 시 에디터 열고 닫는 공통 함수
+function handleTokenClick(sid, phase) {
+  if (selSlot[phase] === sid) {
+    selSlot[phase] = null;
+    closeEditor(phase);
+    renderPitch(phase);
+  } else {
+    selSlot[phase] = sid;
+    renderPitch(phase);
+    openEditor(sid, phase);
+  }
+}
+
+function findNearestSlot(cx, cy, maxDist) {
+  let best = null, bd = Infinity;
+  document.querySelectorAll('.slot').forEach(s => {
+    const r = s.getBoundingClientRect();
+    const d = Math.hypot(cx - (r.left + r.width/2), cy - (r.top + r.height/2));
+    if (d < bd && d < maxDist) { bd = d; best = s; }
+  });
+  return best;
+}
+
+let dragSrc = null;
+function handleDrop(toId, phase) {
+  if (!dragSrc || dragSrc === toId) return;
+  const fp = state[phase].players[dragSrc];
+  const tp = state[phase].players[toId];
+  if (!fp) return;
+  if (tp) state[phase].players[dragSrc] = tp;
+  else delete state[phase].players[dragSrc];
+  state[phase].players[toId] = fp;
+  if (selSlot[phase] === dragSrc) selSlot[phase] = toId;
+  dragSrc = null;
+  renderPitch(phase);
+  if (selSlot[phase]) openEditor(selSlot[phase], phase);
+}
+
+/* ════════ EDITOR ════════ */
+function openEditor(sid, phase) {
+  const p = state[phase].players[sid];
+  if (!p) return;
+
+  const rolesList = STANDARD_ROLES[sid] || ['기본'];
+  const rd = ROLE_DATA.find(r => r.r === p.role) || {f:[], l:[]};
+  const displayName = phase === 'ip' ? p.name : getPlayerName(sid);
+
+  let html = `<div style="font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--acc2);margin-bottom:8px;">${sid} 설정</div>`;
+
+  html += `<div class="ped-field" style="margin-bottom:10px;">
+    <div class="ped-label">역할</div>
+    <select class="ped-select" onchange="upRole('${sid}','${phase}',this.value)">
+      ${rolesList.map(r => `<option value="${r}" ${r === p.role ? 'selected' : ''}>${r}</option>`).join('')}
+    </select>
+  </div>`;
+
+  const piCats = phase === 'ip' ? PI_CATS_IP : PI_CATS_OOP;
+  for (const [cat, opts] of Object.entries(piCats)) {
+    html += `<div class="pi-sec"><div class="pi-sec-label">${cat}</div><div class="pi-chips">`;
+    opts.forEach(o => {
+      const isF = rd.f.includes(o), isL = rd.l.includes(o), isOn = p.pi[o];
+      let cls = 'pichip';
+      if (isF) cls += ' forced'; else if (isL) cls += ' locked'; else if (isOn) cls += ' on';
+      html += `<button class="${cls}" ${(isF||isL) ? 'disabled' : ''} onclick="togglePI('${sid}','${phase}','${o}',this)">${o}</button>`;
+    });
+    html += `</div></div>`;
+  }
+
+  const suffix = phase === 'ip' ? 'IP' : 'OOP';
+  document.getElementById('pedContent' + suffix).innerHTML = html;
+  document.getElementById('playerEditor' + suffix).classList.add('open');
+}
+
+function closeEditor(phase) {
+  const suffix = phase === 'ip' ? 'IP' : 'OOP';
+  document.getElementById('playerEditor' + suffix).classList.remove('open');
+}
+
+function upRole(sid, phase, val) {
+  if (!state[phase].players[sid]) return;
+  state[phase].players[sid].role = val;
+  renderPitch(phase);
+  openEditor(sid, phase);
+}
+
+function togglePI(sid, phase, label, btn) {
+  if (!state[phase].players[sid]) return;
+  state[phase].players[sid].pi[label] = !state[phase].players[sid].pi[label];
+  btn.classList.toggle('on', state[phase].players[sid].pi[label]);
+}
+function goScreen(id, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  document.querySelectorAll('.ntab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+</script>
+</body>
+</html>
