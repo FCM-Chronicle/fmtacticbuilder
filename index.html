@@ -295,6 +295,16 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
     </div>
   </div>
 </div>
+<div id="s-saves" class="screen">
+  <div class="saves-wrap">
+    <div class="saves-card">
+      <h2>💾 내 전술 보관함</h2>
+      <div id="saveList">
+        <div class="empty-msg">저장된 전술이 없습니다.</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
@@ -518,6 +528,7 @@ function renderPitch(phase) {
     tk.className = 'token' + (selSlot[phase] === sid ? ' selected' : '');
     tk.style.left = def.x + '%'; tk.style.top = def.y + '%';
     tk.draggable = (interactMode === 'drag'); // 설정된 모드에 따라 결정
+    tk.dataset.slot = sid;
     
     const roleShort = (p.role || '').match(/\(([^)]+)\)/);
     
@@ -645,6 +656,13 @@ function openEditor(sid, phase) {
 
   let html = `<div style="font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--acc2);margin-bottom:8px;">${sid} 설정</div>`;
 
+  // 👉 이름 입력 필드 추가
+  html += `<div class="ped-field" style="margin-bottom:10px;">
+    <div class="ped-label">선수 이름</div>
+    <input class="ped-input" type="text" value="${displayName}" oninput="upName('${sid}', this.value)" placeholder="이름을 입력하세요">
+  </div>`;
+
+  // 기존 역할 선택 필드
   html += `<div class="ped-field" style="margin-bottom:10px;">
     <div class="ped-label">역할</div>
     <select class="ped-select" onchange="upRole('${sid}','${phase}',this.value)">
@@ -669,6 +687,18 @@ function openEditor(sid, phase) {
   document.getElementById('playerEditor' + suffix).classList.add('open');
 }
 
+  function upName(sid, val) {
+  // 상태 업데이트 (IP, OOP 양쪽 모두 동기화)
+  if (state.ip.players[sid]) state.ip.players[sid].name = val;
+  if (state.oop.players[sid]) state.oop.players[sid].name = val;
+
+  // 화면 재렌더링 없이 DOM의 텍스트만 실시간으로 변경 (UX 최적화)
+  document.querySelectorAll(`.token[data-slot="${sid}"] .token-name`).forEach(el => {
+    el.textContent = val;
+  });
+}
+
+
 function closeEditor(phase) {
   const suffix = phase === 'ip' ? 'IP' : 'OOP';
   document.getElementById('playerEditor' + suffix).classList.remove('open');
@@ -692,6 +722,105 @@ function goScreen(id, btn) {
   document.querySelectorAll('.ntab').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
 }
+
+  /* ════════ SAVE & LOAD SYSTEM ════════ */
+// 토스트 메시지 띄우기
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// 로컬스토리지에 전술 저장
+function doSave() {
+  const tName = document.getElementById('tacticName').value.trim() || '나의 전술';
+  const saves = JSON.parse(localStorage.getItem('fm26_saves') || '{}');
+  saves[tName] = state; // 현재 state 통째로 저장
+  localStorage.setItem('fm26_saves', JSON.stringify(saves));
+  
+  showToast(`'${tName}' 저장 완료! 💾`);
+  renderSaves(); // 저장함 목록 갱신
+}
+
+// JSON 파일로 다운로드
+function doExportJSON() {
+  const tName = document.getElementById('tacticName').value.trim() || 'tactic';
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+  const btn = document.createElement('a');
+  btn.setAttribute("href", dataStr);
+  btn.setAttribute("download", `FM26_${tName}.json`);
+  document.body.appendChild(btn);
+  btn.click();
+  btn.remove();
+  showToast("JSON 다운로드 시작! ⬇️");
+}
+
+// 저장함 목록 렌더링
+function renderSaves() {
+  const saves = JSON.parse(localStorage.getItem('fm26_saves') || '{}');
+  const list = document.getElementById('saveList');
+  if(!list) return;
+
+  if (Object.keys(saves).length === 0) {
+    list.innerHTML = '<div class="empty-msg">저장된 전술이 없습니다.</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  for (const [name, data] of Object.entries(saves)) {
+    const item = document.createElement('div');
+    item.className = 'save-item';
+    item.innerHTML = `
+      <div class="si-info">
+        <div class="si-name">${name}</div>
+        <div class="si-meta">IP: ${data.ip.formation} / OOP: ${data.oop.formation} / ${data.mentality}</div>
+      </div>
+      <button class="ibtn" onclick="loadSave('${name}')">불러오기</button>
+      <button class="ibtn oop-color" style="border-color:var(--red)" onclick="deleteSave('${name}')">삭제</button>
+    `;
+    list.appendChild(item);
+  }
+}
+
+// 전술 불러오기
+function loadSave(name) {
+  const saves = JSON.parse(localStorage.getItem('fm26_saves') || '{}');
+  if(saves[name]) {
+    state = saves[name]; // 상태 덮어씌우기
+    document.getElementById('tacticName').value = name;
+    
+    // 멘탈리티 버튼 UI 갱신
+    document.querySelectorAll('.mchip').forEach(x => {
+      x.classList.toggle('on', x.textContent === state.mentality);
+    });
+    
+    // 화면 재렌더링
+    renderPitch('ip');
+    renderPitch('oop');
+    showToast(`'${name}' 불러오기 완료! ✅`);
+    
+    // 포메이션 탭으로 자동 이동
+    const fmTabBtn = document.querySelectorAll('.ntab')[1];
+    goScreen('formation', fmTabBtn);
+  }
+}
+
+// 전술 삭제
+function deleteSave(name) {
+  if(!confirm(`'${name}' 전술을 정말 삭제하시겠습니까?`)) return;
+  const saves = JSON.parse(localStorage.getItem('fm26_saves') || '{}');
+  delete saves[name];
+  localStorage.setItem('fm26_saves', JSON.stringify(saves));
+  showToast(`'${name}' 삭제됨 🗑️`);
+  renderSaves();
+}
+
+// 초기화 시 저장 목록도 한 번 불러오도록 설정
+window.addEventListener('load', () => {
+  renderSaves(); 
+});
+
 </script>
 </body>
 </html>
