@@ -405,11 +405,28 @@ const NAMES = {
 };
 
 /* ════════ STATE ════════ */
+/* ════════ 최신 버전 호환 STATE ════════ */
 let state = {
-  ip:  { formation:'4-3-3', players:{} },
-  oop: { formation:'4-3-3', players:{} },
-  mentality: '균형',
+  // 모든 선수의 이름만 따로 모아서 관리하는 장부
+  // 여기에 값이 없으면 코드가 자동으로 sid(포지션명)를 이름으로 출력함
+  playerData: {}, 
+
+  // 공 소유 시 (In Possession) 전술 데이터
+  ip: { 
+    formation: '4-3-3', 
+    players: {} // { 'ST': { role: '...', pi: {} }, ... }
+  },
+
+  // 공 미소유 시 (Out Of Possession) 전술 데이터
+  oop: { 
+    formation: '4-3-3', 
+    players: {} 
+  },
+
+  // 팀 전체 성향
+  mentality: '균형'
 };
+  
 let currentPhase = 'ip';
 let selSlot = { ip:null, oop:null };
 
@@ -652,24 +669,24 @@ function openEditor(sid, phase) {
 
   const rolesList = STANDARD_ROLES[sid] || ['기본'];
   const rd = ROLE_DATA.find(r => r.r === p.role) || {f:[], l:[]};
-  const displayName = phase === 'ip' ? p.name : getPlayerName(sid);
+  const pName = state.playerData[sid] ? state.playerData[sid].name : (NAMES[sid] || sid);
 
   let html = `<div style="font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--acc2);margin-bottom:8px;">${sid} 설정</div>`;
 
-  // 👉 이름 입력 필드 추가
+  // 선수 이름 입력 필드 (oninput을 사용해 실시간 동기화)
   html += `<div class="ped-field" style="margin-bottom:10px;">
     <div class="ped-label">선수 이름</div>
-    <input class="ped-input" type="text" value="${displayName}" oninput="upName('${sid}', this.value)" placeholder="이름을 입력하세요">
+    <input class="ped-input" type="text" value="${pName}" oninput="upName('${sid}', this.value)" placeholder="이름 입력">
   </div>`;
 
-  // 기존 역할 선택 필드
+  // 역할 선택
   html += `<div class="ped-field" style="margin-bottom:10px;">
     <div class="ped-label">역할</div>
     <select class="ped-select" onchange="upRole('${sid}','${phase}',this.value)">
       ${rolesList.map(r => `<option value="${r}" ${r === p.role ? 'selected' : ''}>${r}</option>`).join('')}
     </select>
   </div>`;
-
+  
   const piCats = phase === 'ip' ? PI_CATS_IP : PI_CATS_OOP;
   for (const [cat, opts] of Object.entries(piCats)) {
     html += `<div class="pi-sec"><div class="pi-sec-label">${cat}</div><div class="pi-chips">`;
@@ -687,16 +704,63 @@ function openEditor(sid, phase) {
   document.getElementById('playerEditor' + suffix).classList.add('open');
 }
 
-  function upName(sid, val) {
-  // 상태 업데이트 (IP, OOP 양쪽 모두 동기화)
-  if (state.ip.players[sid]) state.ip.players[sid].name = val;
-  if (state.oop.players[sid]) state.oop.players[sid].name = val;
+  // 선수 이름 수정 (어느 페이즈에서 수정하든 playerData를 건드림)
+function upName(sid, val) {
+  if (!state.playerData[sid]) state.playerData[sid] = {};
+  state.playerData[sid].name = val;
 
-  // 화면 재렌더링 없이 DOM의 텍스트만 실시간으로 변경 (UX 최적화)
+  // 화면에 렌더링된 모든 같은 슬롯의 이름 텍스트 즉시 변경 (동기화)
   document.querySelectorAll(`.token[data-slot="${sid}"] .token-name`).forEach(el => {
     el.textContent = val;
   });
 }
+
+// 피치 렌더링 (이름은 항상 playerData에서 가져옴)
+function renderPitch(phase) {
+  const suffix = phase === 'ip' ? 'IP' : 'OOP';
+  const SL = document.getElementById('slotsLayer' + suffix);
+  const TL = document.getElementById('tokensLayer' + suffix);
+  SL.innerHTML = ''; TL.innerHTML = '';
+  const phaseState = state[phase];
+
+  // 슬롯 렌더링 (기존 로직 동일)
+  SLOTS.forEach(def => {
+    const hasP = !!phaseState.players[def.id];
+    const slot = document.createElement('div');
+    slot.className = 'slot' + (hasP ? ' has-player' : '');
+    slot.style.left = def.x + '%'; slot.style.top = def.y + '%';
+    slot.dataset.slot = def.id;
+    // ... 드래그 이벤트 생략 (기존과 동일)
+    SL.appendChild(slot);
+  });
+
+  // 토큰 렌더링
+  Object.entries(phaseState.players).forEach(([sid, p]) => {
+    const def = SLOTS.find(d => d.id === sid);
+    if (!def) return;
+
+    const tk = document.createElement('div');
+    tk.className = 'token' + (selSlot[phase] === sid ? ' selected' : '');
+    tk.style.left = def.x + '%'; tk.style.top = def.y + '%';
+    tk.draggable = (interactMode === 'drag');
+    tk.dataset.slot = sid; // 동기화를 위한 식별값
+
+    const roleShort = (p.role || '').match(/\(([^)]+)\)/);
+    const pName = state.playerData[sid] ? state.playerData[sid].name : (NAMES[sid] || sid);
+    
+    tk.innerHTML = `
+      <div class="token-circle">
+        <div class="pos-abbr">${sid}</div>
+        <div class="role-badge ${phase==='ip'?'ip-color':'oop-color'}">${roleShort ? roleShort[1] : ''}</div>
+      </div>
+      <div class="token-name">${pName}</div>
+      <div class="token-role">${p.role || ''}</div>
+    `;
+    // ... 터치/클릭 이벤트 생략 (기존과 동일)
+    TL.appendChild(tk);
+  });
+}
+
 
 
 function closeEditor(phase) {
