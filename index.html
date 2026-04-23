@@ -46,10 +46,9 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
 .fptab.oop-tab:hover{color:#e0d0ff;}
 .fptab.oop-tab.on{color:var(--red);border-bottom-color:var(--red);background:rgba(240,64,96,.06);}
 
-/* 모드 전환 버튼 스타일 */
-.mode-toggle { display:flex; padding:8px 12px; background:var(--p1); gap:8px; border-bottom:1px solid var(--border); flex-shrink:0; }
-.mode-btn { flex:1; padding:8px; border-radius:var(--r2); border:1.5px solid var(--border); background:var(--p2); color:var(--p7); font-weight:700; cursor:pointer; font-family:'Noto Sans KR',sans-serif; font-size:13px; transition:all .15s; }
-.mode-btn.on { background:var(--acc); color:#000; border-color:var(--acc); }
+.mode-toggle{display:flex;padding:8px 12px;background:var(--p1);gap:8px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.mode-btn{flex:1;padding:8px;border-radius:var(--r2);border:1.5px solid var(--border);background:var(--p2);color:var(--p7);font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:13px;transition:all .15s;}
+.mode-btn.on{background:var(--acc);color:#000;border-color:var(--acc);}
 
 .fm-phase{display:none;flex:1;overflow:hidden;flex-direction:row;}
 .fm-phase.on{display:flex;}
@@ -65,7 +64,6 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
 .slot:hover{border-color:rgba(168,127,232,.55);background:rgba(90,53,168,.18);}
 .slot.has-player{border-color:transparent;background:transparent;}
 .slot.drag-over{border-color:var(--acc2)!important;background:rgba(0,232,184,.22)!important;border-style:solid!important;border-width:2.5px!important;}
-.slot-hint{font-family:'Barlow Condensed',sans-serif;font-size:9px;color:rgba(120,80,200,.4);letter-spacing:.5px;font-weight:600;pointer-events:none;text-align:center;}
 
 .token{position:absolute;transform:translate(-50%,-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:2px;touch-action:none;user-select:none;pointer-events:all;}
 .token-circle{width:40px;height:40px;border-radius:50%;background:var(--p4);border:2.5px solid var(--p6);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:#e0d0ff;line-height:1.1;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.6);transition:border-color .15s,box-shadow .15s,transform .1s;user-select:none;cursor:pointer;}
@@ -80,31 +78,24 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
 .token-name{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;color:#fff;text-shadow:0 1px 4px #000,0 0 8px rgba(0,0,0,.9);white-space:nowrap;pointer-events:none;max-width:70px;overflow:hidden;text-overflow:ellipsis;}
 .token-role{font-family:'Barlow Condensed',sans-serif;font-size:8px;color:var(--p8);text-shadow:0 1px 3px #000;white-space:nowrap;pointer-events:none;max-width:70px;overflow:hidden;text-overflow:ellipsis;}
 
-/* PLAYER EDITOR */
 .ped{position:absolute;bottom:0;left:0;right:0;background:rgba(8,3,22,.98);border-top:1.5px solid var(--border2);padding:12px 14px 14px;transform:translateY(100%);transition:transform .22s ease;z-index:50;max-height:80%;overflow-y:auto;}
 .ped.open{transform:translateY(0);}
 .ped-close{position:absolute;top:10px;right:12px;background:transparent;border:none;color:var(--p7);font-size:18px;cursor:pointer;padding:4px;z-index:51;}
 .ped-close:hover{color:var(--acc);}
 .ped-field{display:flex;flex-direction:column;gap:3px;min-width:130px;flex:1;}
 .ped-label{font-size:10px;font-weight:700;color:var(--p7);text-transform:uppercase;letter-spacing:1px;}
-.ped-label.ip{color:var(--acc2);}
-.ped-label.oop{color:var(--red);}
 .ped-select,.ped-input{padding:6px 10px;background:var(--p1);border:1.5px solid var(--border);border-radius:var(--r2);color:#e0d0ff;font-size:12px;font-family:'Noto Sans KR',sans-serif;outline:none;width:100%;}
 .ped-select:focus,.ped-input:focus{border-color:var(--p6);}
 .pi-sec{margin-top:8px;}
 .pi-sec-label{font-size:10px;font-weight:700;color:var(--p7);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
-.pi-sec-label.ip{color:var(--acc2);}
-.pi-sec-label.oop{color:var(--red);}
 .pi-chips{display:flex;flex-wrap:wrap;gap:3px;}
 .pichip{padding:3px 8px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--p7);font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .12s;}
 .pichip:hover{border-color:var(--p6);color:#e0d0ff;}
 .pichip.on{background:var(--p3);border-color:var(--p6);color:#e0d0ff;}
 .pichip.forced{background:rgba(245,200,66,.12);border-color:var(--acc);color:var(--acc);cursor:default;}
 .pichip.locked{opacity:.25;cursor:not-allowed;text-decoration:line-through;}
-.forced-line{font-size:11px;color:var(--acc);margin-bottom:4px;line-height:1.8;}
-.locked-line{font-size:11px;color:var(--red);margin-bottom:6px;line-height:1.8;}
 
-/* ── SETUP TAB (Formation + Mentality) ── */
+/* ── SETUP TAB ── */
 #s-setup{flex-direction:column;overflow-y:auto;}
 .setup-content{padding:16px;max-width:900px;margin:0 auto;width:100%;}
 .setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
@@ -126,48 +117,28 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
 .phase-label.ip{color:var(--acc2);}
 .phase-label.oop{color:var(--red);}
 
-/* ── TEAM INSTRUCTIONS ── */
-#s-instructions{flex-direction:column;}
-.ti-tabbar{display:flex;height:44px;background:var(--p1);border-bottom:1.5px solid var(--border);flex-shrink:0;}
-.titab{flex:1;border:none;background:transparent;color:var(--p7);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;}
-.titab:hover{color:#e0d0ff;}
-.titab.on{color:var(--acc);border-bottom-color:var(--acc);}
-.ti-panels{flex:1;overflow:hidden;}
-.ti-panel{display:none;height:100%;overflow-y:auto;padding:14px;}
-.ti-panel.on{display:block;}
-.ti-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
-.card-sub{font-size:10px;color:var(--p7);margin-bottom:6px;font-style:italic;}
-.chips{display:flex;flex-wrap:wrap;gap:4px;}
-.chip{padding:5px 11px;border-radius:14px;border:1.5px solid var(--border);background:transparent;color:var(--p7);font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .13s;}
-.chip:hover{border-color:var(--p6);color:#e0d0ff;}
-.chip.on{background:var(--p3);border-color:var(--p6);color:#e0d0ff;}
-.sld-wrap{display:flex;align-items:center;gap:8px;}
-.sld-wrap input[type=range]{flex:1;height:4px;padding:0;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:2px;border:none;cursor:pointer;}
-.sld-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--p6);border:2px solid var(--acc);cursor:pointer;}
-.sld-val{min-width:20px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--acc);}
-.sld-lbl{font-size:10px;color:var(--p7);white-space:nowrap;}
-.tip{background:rgba(0,232,184,.07);border:1px solid rgba(0,232,184,.25);border-radius:var(--r2);padding:9px 12px;font-size:12px;color:var(--acc2);line-height:1.6;margin-top:8px;}
-.warn{background:rgba(245,200,66,.07);border:1px solid rgba(245,200,66,.25);border-radius:var(--r2);padding:9px 12px;font-size:12px;color:var(--acc);line-height:1.6;margin-top:10px;}
+/* ── BASE FORMATION TAB ── */
+#s-base{flex-direction:column;overflow-y:auto;}
+.base-content{padding:16px;max-width:700px;margin:0 auto;width:100%;}
+.base-notice{background:rgba(245,200,66,.08);border:1.5px solid rgba(245,200,66,.3);border-radius:var(--r);padding:12px 14px;font-size:12px;color:var(--acc);line-height:1.7;margin-bottom:16px;}
+.base-notice strong{font-weight:700;}
+.base-synced{background:rgba(0,232,184,.08);border:1.5px solid rgba(0,232,184,.3);border-radius:var(--r);padding:12px 14px;font-size:12px;color:var(--acc2);line-height:1.7;margin-bottom:16px;}
+.base-preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+@media(max-width:480px){.base-preset-grid{grid-template-columns:repeat(2,1fr);}}
+.base-pbtn{padding:14px 8px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--p1);color:var(--p7);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;cursor:pointer;text-align:center;transition:all .14px;line-height:1.3;}
+.base-pbtn:hover{border-color:var(--p6);color:#e0d0ff;background:var(--p2);}
+.base-pbtn.on{background:var(--p3);border-color:var(--acc);color:var(--acc);}
+.base-pbtn small{display:block;font-size:10px;font-weight:400;opacity:.7;margin-top:2px;font-family:'Noto Sans KR',sans-serif;}
+.sync-btn{width:100%;padding:14px;border-radius:var(--r);border:2px solid var(--acc);background:rgba(245,200,66,.1);color:var(--acc);font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .15s;margin-top:4px;}
+.sync-btn:hover{background:var(--acc);color:#07021a;}
+.sync-btn:disabled{opacity:.35;cursor:not-allowed;background:transparent;}
 
-/* ── SETPIECE & REF & SAVES ── (기존과 동일하게 유지) */
-#s-setpiece,#s-reference,#s-saves{overflow-y:auto;}
-.sp-content,.ref-content,.saves-wrap{padding:14px;max-width:900px;margin:0 auto;width:100%;}
-.sptabs{display:flex;gap:0;margin-bottom:14px;border-bottom:1.5px solid var(--border);}
-.sptab{padding:8px 14px;border:none;background:transparent;color:var(--p7);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;transition:all .15s;}
-.sptab:hover{color:#e0d0ff;}
-.sptab.on{color:var(--acc);border-bottom-color:var(--acc);}
-.sp-panel{display:none;}
-.sp-panel.on{display:block;}
-.sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
-.rtable{width:100%;border-collapse:collapse;font-size:12px;}
-.rtable th{background:var(--p2);color:var(--p8);padding:8px 12px;text-align:left;font-weight:700;border-bottom:2px solid var(--border2);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;font-size:11px;text-transform:uppercase;}
-.rtable td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
-.rtable tr:hover td{background:rgba(37,22,96,.35);}
-.rtable .group-row td{background:var(--p2);color:var(--p7);font-weight:700;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;}
+/* ── SAVES ── */
+#s-saves{overflow-y:auto;}
+.saves-wrap{padding:14px;max-width:900px;margin:0 auto;width:100%;}
 .saves-card{background:var(--p1);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;}
 .saves-card h2{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--p8);margin-bottom:12px;}
-.save-item{background:var(--p2);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 13px;margin-bottom:7px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:border-color .15s;}
-.save-item:hover{border-color:var(--p6);}
+.save-item{background:var(--p2);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 13px;margin-bottom:7px;display:flex;align-items:center;gap:9px;}
 .si-info{flex:1;}
 .si-name{font-weight:600;font-size:14px;}
 .si-meta{font-size:11px;color:var(--p7);margin-top:1px;}
@@ -176,10 +147,7 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--grn);color:#07021a;padding:10px 22px;border-radius:24px;font-size:13px;font-weight:700;z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.5);font-family:'Noto Sans KR',sans-serif;}
 #toast.show{opacity:1;}
 
-@media(max-width:480px){
-  .fm-phase{flex-direction:column;}
-  .pitch-wrap{width:min(280px,90vw);}
-}
+@media(max-width:480px){.fm-phase{flex-direction:column;}.pitch-wrap{width:min(280px,90vw);}}
 @media(max-width:420px){.ntab{font-size:12px;padding:0 9px;}}
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:var(--p0);}
@@ -192,10 +160,9 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
   <div class="logo">FM<em>26</em></div>
   <div class="nav-tabs">
     <button class="ntab on"  onclick="goScreen('setup',this)">⚙️ 설정</button>
+    <button class="ntab"     onclick="goScreen('base',this)">📐 기본 포메이션</button>
     <button class="ntab"     onclick="goScreen('formation',this)">⚽ 포메이션</button>
     <button class="ntab"     onclick="goScreen('instructions',this)">🎯 팀 지침</button>
-    <button class="ntab"     onclick="goScreen('setpiece',this)">🔄 세트피스</button>
-    <button class="ntab"     onclick="goScreen('reference',this)">📖 참고서</button>
     <button class="ntab"     onclick="goScreen('saves',this)">💾 저장함</button>
   </div>
   <div class="nav-right">
@@ -204,6 +171,7 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
   </div>
 </nav>
 
+<!-- ── SETUP ── -->
 <div id="s-setup" class="screen on">
   <div class="setup-content">
     <div class="sec-header">⚙️ 전술 기본 설정</div>
@@ -228,15 +196,41 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
   </div>
 </div>
 
+<!-- ── BASE FORMATION ── -->
+<div id="s-base" class="screen">
+  <div class="base-content">
+    <div class="sec-header">📐 기본 포메이션</div>
+    <div class="base-notice">
+      <strong>⚡ 동기화 안내:</strong> 포메이션을 선택하고 동기화를 누르면 해당 phase에 적용됩니다.<br>
+      선수 이름은 <strong>슬롯 번호 기준</strong>으로 IP/OOP가 항상 공유됩니다.
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">📋 포메이션 선택</div>
+      <div class="base-preset-grid" id="basePresetGrid"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔄 동기화 옵션</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="sync-btn" onclick="syncBoth()">⚽🛡 IP + OOP 모두 동기화</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <button class="sync-btn" style="font-size:14px;padding:10px;" onclick="syncOne('ip')">⚽ IP만 적용</button>
+          <button class="sync-btn" style="font-size:14px;padding:10px;" onclick="syncOne('oop')">🛡 OOP만 적용</button>
+        </div>
+      </div>
+      <div id="syncResult" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FORMATION ── -->
 <div id="s-formation" class="screen">
   <div class="fm-phase-tabs">
     <button class="fptab ip-tab on" id="fptab-ip" onclick="switchPhase('ip')">⚽ 공 소유 시</button>
     <button class="fptab oop-tab"   id="fptab-oop" onclick="switchPhase('oop')">🛡 공 미소유 시</button>
   </div>
-  
   <div class="mode-toggle">
-    <button class="mode-btn on" onclick="setInteractionMode('edit', this)">👆 역할 설정 (터치)</button>
-    <button class="mode-btn" onclick="setInteractionMode('drag', this)">✋ 이동 (드래그)</button>
+    <button class="mode-btn on" id="modeEditBtn" onclick="setInteractionMode('edit',this)">👆 역할 설정</button>
+    <button class="mode-btn"    id="modeDragBtn" onclick="setInteractionMode('drag',this)">✋ 이동 드래그</button>
   </div>
 
   <div class="fm-phase on" id="phase-ip">
@@ -263,7 +257,10 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
         <div id="slotsLayerIP"></div>
         <div id="tokensLayerIP"></div>
       </div>
-      <div class="ped" id="playerEditorIP"><button class="ped-close" id="pedCloseIP">✕</button><div id="pedContentIP"></div></div>
+      <div class="ped" id="playerEditorIP">
+        <button class="ped-close" id="pedCloseIP">✕</button>
+        <div id="pedContentIP"></div>
+      </div>
     </div>
   </div>
 
@@ -291,17 +288,25 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
         <div id="slotsLayerOOP"></div>
         <div id="tokensLayerOOP"></div>
       </div>
-      <div class="ped" id="playerEditorOOP"><button class="ped-close" id="pedCloseOOP">✕</button><div id="pedContentOOP"></div></div>
+      <div class="ped" id="playerEditorOOP">
+        <button class="ped-close" id="pedCloseOOP">✕</button>
+        <div id="pedContentOOP"></div>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- ── INSTRUCTIONS ── -->
+<div id="s-instructions" class="screen">
+  <div style="padding:24px;color:var(--p7);font-size:13px;">팀 지침 탭 (추후 추가)</div>
+</div>
+
+<!-- ── SAVES ── -->
 <div id="s-saves" class="screen">
   <div class="saves-wrap">
     <div class="saves-card">
       <h2>💾 내 전술 보관함</h2>
-      <div id="saveList">
-        <div class="empty-msg">저장된 전술이 없습니다.</div>
-      </div>
+      <div id="saveList"><div class="empty-msg">저장된 전술이 없습니다.</div></div>
     </div>
   </div>
 </div>
@@ -309,7 +314,9 @@ nav{height:48px;background:rgba(7,2,26,.97);border-bottom:1.5px solid var(--bord
 <div id="toast"></div>
 
 <script>
-/* ════════════════════════ DATA ════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════ */
 const SLOT_GRID = [
   ['ST', 10, ['LST','ST','RST']],
   ['AM', 24, ['AML','LCAM','CAM','RCAM','AMR']],
@@ -318,305 +325,414 @@ const SLOT_GRID = [
   ['DF', 72, ['LB','LCB','CB','RCB','RB']],
   ['GK', 88, ['GK']],
 ];
-const COL_X = { 1:[50], 3:[20,50,80], 5:[8,27,50,73,92] };
-function buildSlots() {
+const COL_X = { 1:[50], 2:[30,70], 3:[20,50,80], 4:[14,38,62,86], 5:[8,27,50,73,92] };
+function buildAllSlots() {
   const out = [];
   SLOT_GRID.forEach(([row,y,slots]) => {
-    const xs = COL_X[slots.length];
+    const xs = COL_X[slots.length] || COL_X[3];
     slots.forEach((id,i) => out.push({id,row,x:xs[i],y}));
   });
   return out;
 }
-const SLOTS = buildSlots();
+const ALL_SLOTS = buildAllSlots();
 
-// ✨ 유저 요청: "이상한 역할들 말고 근본 FM 역할로 통일!"
 const STANDARD_ROLES = {
-  GK:['골키퍼 (GK)','스위퍼 키퍼 (SK)'],
-  LB:['풀백 (FB)','윙백 (WB)','인버티드 풀백 (IFB)','인버티드 윙백 (IWB)'],
-  LCB:['중앙 수비수 (CB)','볼 플레잉 디펜더 (BPD)','노넌센스 CB (NCB)','리베로 (Lib)'],
-  CB:['중앙 수비수 (CB)','볼 플레잉 디펜더 (BPD)','노넌센스 CB (NCB)','리베로 (Lib)'],
-  RCB:['중앙 수비수 (CB)','볼 플레잉 디펜더 (BPD)','노넌센스 CB (NCB)','리베로 (Lib)'],
-  RB:['풀백 (FB)','윙백 (WB)','인버티드 풀백 (IFB)','인버티드 윙백 (IWB)'],
-  WBL:['윙백 (WB)','인버티드 윙백 (IWB)','컴플리트 윙백 (CWB)'],
+  GK:  ['골키퍼 (GK)','스위퍼 키퍼 (SK)'],
+  LB:  ['풀백 (FB)','윙백 (WB)','인버티드 풀백 (IFB)','인버티드 윙백 (IWB)'],
+  LCB: ['중앙 수비수 (CB)','볼 플레잉 디펜더 (BPD)','노넌센스 CB (NCB)','리베로 (Lib)'],
+  CB:  ['중앙 수비수 (CB)','볼 플레잉 디펜더 (BPD)','노넌센스 CB (NCB)','리베로 (Lib)'],
+  RCB: ['중앙 수비수 (CB)','볼 플레잉 디펜더 (BPD)','노넌센스 CB (NCB)','리베로 (Lib)'],
+  RB:  ['풀백 (FB)','윙백 (WB)','인버티드 풀백 (IFB)','인버티드 윙백 (IWB)'],
+  WBL: ['윙백 (WB)','인버티드 윙백 (IWB)','컴플리트 윙백 (CWB)'],
   LDMC:['수비형 MF (DM)','딥 라잉 플레이메이커 (DLP)','볼 위닝 MF (BWM)','하프백 (HB)','앵커맨 (A)','세군도 볼란테 (SV)'],
-  DMC:['수비형 MF (DM)','딥 라잉 플레이메이커 (DLP)','볼 위닝 MF (BWM)','하프백 (HB)','앵커맨 (A)','레지스타 (Reg)','로밍 플레이메이커 (RP)'],
+  DMC: ['수비형 MF (DM)','딥 라잉 플레이메이커 (DLP)','볼 위닝 MF (BWM)','하프백 (HB)','앵커맨 (A)','레지스타 (Reg)','로밍 플레이메이커 (RP)'],
   RDMC:['수비형 MF (DM)','딥 라잉 플레이메이커 (DLP)','볼 위닝 MF (BWM)','하프백 (HB)','앵커맨 (A)','세군도 볼란테 (SV)'],
-  WBR:['윙백 (WB)','인버티드 윙백 (IWB)','컴플리트 윙백 (CWB)'],
-  LM:['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','와이드 플레이메이커 (WP)'],
-  LCM:['센트럴 MF (CM)','박스 투 박스 (BBM)','메짤라 (Mez)','어드밴스드 플레이메이커 (AP)','볼 위닝 MF (BWM)'],
-  CM:['센트럴 MF (CM)','박스 투 박스 (BBM)','메짤라 (Mez)','딥 라잉 플레이메이커 (DLP)','어드밴스드 플레이메이커 (AP)'],
-  RCM:['센트럴 MF (CM)','박스 투 박스 (BBM)','메짤라 (Mez)','어드밴스드 플레이메이커 (AP)','볼 위닝 MF (BWM)'],
-  RM:['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','와이드 플레이메이커 (WP)'],
-  AML:['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','라움도이터 (RD)'],
+  WBR: ['윙백 (WB)','인버티드 윙백 (IWB)','컴플리트 윙백 (CWB)'],
+  LM:  ['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','와이드 플레이메이커 (WP)'],
+  LCM: ['센트럴 MF (CM)','박스 투 박스 (BBM)','메짤라 (Mez)','어드밴스드 플레이메이커 (AP)','볼 위닝 MF (BWM)'],
+  CM:  ['센트럴 MF (CM)','박스 투 박스 (BBM)','메짤라 (Mez)','딥 라잉 플레이메이커 (DLP)','어드밴스드 플레이메이커 (AP)'],
+  RCM: ['센트럴 MF (CM)','박스 투 박스 (BBM)','메짤라 (Mez)','어드밴스드 플레이메이커 (AP)','볼 위닝 MF (BWM)'],
+  RM:  ['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','와이드 플레이메이커 (WP)'],
+  AML: ['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','라움도이터 (RD)'],
   LCAM:['공격형 MF (AM)','섀도 스트라이커 (SS)','어드밴스드 플레이메이커 (AP)'],
-  CAM:['공격형 MF (AM)','섀도 스트라이커 (SS)','어드밴스드 플레이메이커 (AP)','엔간체 (EG)'],
+  CAM: ['공격형 MF (AM)','섀도 스트라이커 (SS)','어드밴스드 플레이메이커 (AP)','엔간체 (EG)'],
   RCAM:['공격형 MF (AM)','섀도 스트라이커 (SS)','어드밴스드 플레이메이커 (AP)'],
-  AMR:['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','라움도이터 (RD)'],
-  LST:['어드밴스드 포워드 (AF)','포처 (P)','타겟 포워드 (TF)','딥 라잉 포워드 (DLF)','프레싱 포워드 (PF)','컴플리트 포워드 (CF)','팔스 나인 (F9)'],
-  ST:['어드밴스드 포워드 (AF)','포처 (P)','타겟 포워드 (TF)','딥 라잉 포워드 (DLF)','프레싱 포워드 (PF)','컴플리트 포워드 (CF)','팔스 나인 (F9)'],
-  RST:['어드밴스드 포워드 (AF)','포처 (P)','타겟 포워드 (TF)','딥 라잉 포워드 (DLF)','프레싱 포워드 (PF)','컴플리트 포워드 (CF)','팔스 나인 (F9)'],
+  AMR: ['윙어 (W)','인사이드 포워드 (IF)','인버티드 윙어 (IW)','라움도이터 (RD)'],
+  LST: ['어드밴스드 포워드 (AF)','포처 (P)','타겟 포워드 (TF)','딥 라잉 포워드 (DLF)','프레싱 포워드 (PF)','컴플리트 포워드 (CF)','팔스 나인 (F9)'],
+  ST:  ['어드밴스드 포워드 (AF)','포처 (P)','타겟 포워드 (TF)','딥 라잉 포워드 (DLF)','프레싱 포워드 (PF)','컴플리트 포워드 (CF)','팔스 나인 (F9)'],
+  RST: ['어드밴스드 포워드 (AF)','포처 (P)','타겟 포워드 (TF)','딥 라잉 포워드 (DLF)','프레싱 포워드 (PF)','컴플리트 포워드 (CF)','팔스 나인 (F9)'],
 };
 
-// IP와 OOP 모두 근본 역할로 통일
-const ROLES_IP = STANDARD_ROLES;
-const ROLES_OOP = STANDARD_ROLES;
-
 const ROLE_DATA = [
-  {r:'골키퍼 (GK)',          f:['포지션 유지'], l:['드리블 자주','넓게 위치']},
-  {r:'스위퍼 키퍼 (SK)',     f:['위험한 패스'], l:[]},
-  {r:'중앙 수비수 (CB)',      f:[], l:[]},
-  {r:'볼 플레잉 디펜더 (BPD)',f:['위험한 패스'], l:['안전하게 패스']},
-  {r:'노넌센스 CB (NCB)',     f:['다이렉트 패스','안전하게 패스'], l:['위험한 패스','드리블']},
-  {r:'리베로 (Lib)',          f:['앞으로 전진'], l:[]},
-  {r:'풀백 (FB)',             f:[], l:[]},
-  {r:'윙백 (WB)',             f:['앞으로 전진'], l:[]},
-  {r:'인버티드 풀백 (IFB)',   f:['좁게 위치','자리에 머물기'], l:['넓게 위치','앞으로 전진']},
-  {r:'인버티드 윙백 (IWB)',   f:['좁게 위치','중앙으로 컷인'], l:['외곽 돌파']},
-  {r:'수비형 MF (DM)',        f:['자리에 머물기'], l:[]},
-  {r:'딥 라잉 플레이메이커 (DLP)',f:['자리에 머물기','플레이메이커 지정'], l:['포지션 자유']},
-  {r:'어드밴스드 플레이메이커 (AP)',f:['위험한 패스','플레이메이커 지정'], l:[]},
-  {r:'박스 투 박스 (BBM)',    f:['포지션 자유'], l:['자리에 머물기']},
-  {r:'센트럴 MF (CM)',        f:[], l:[]},
-  {r:'메짤라 (Mez)',          f:['넓게 위치','측면 침투'], l:['좁게 위치','자리에 머물기']},
-  {r:'윙어 (W)',              f:['넓게 위치','외곽 돌파'], l:['좁게 위치','중앙 컷인']},
-  {r:'인사이드 포워드 (IF)',  f:['중앙으로 컷인'], l:['외곽 돌파']},
-  {r:'어드밴스드 포워드 (AF)',f:['측면 침투'], l:['수비 라인으로 내려오기']},
-  {r:'포처 (P)',              f:['크로스 적게','드리블 적게'], l:['포지션 자유']},
+  {r:'골키퍼 (GK)',                 f:['포지션 유지'], l:['드리블 자주','넓게 위치']},
+  {r:'스위퍼 키퍼 (SK)',            f:['위험한 패스'], l:[]},
+  {r:'중앙 수비수 (CB)',             f:[], l:[]},
+  {r:'볼 플레잉 디펜더 (BPD)',       f:['위험한 패스'], l:['안전하게 패스']},
+  {r:'노넌센스 CB (NCB)',            f:['다이렉트 패스','안전하게 패스'], l:['위험한 패스','드리블']},
+  {r:'리베로 (Lib)',                 f:['앞으로 전진'], l:[]},
+  {r:'풀백 (FB)',                    f:[], l:[]},
+  {r:'윙백 (WB)',                    f:['앞으로 전진'], l:[]},
+  {r:'인버티드 풀백 (IFB)',          f:['좁게 위치','자리에 머물기'], l:['넓게 위치','앞으로 전진']},
+  {r:'인버티드 윙백 (IWB)',          f:['좁게 위치','중앙으로 컷인'], l:['외곽 돌파']},
+  {r:'수비형 MF (DM)',               f:['자리에 머물기'], l:[]},
+  {r:'딥 라잉 플레이메이커 (DLP)',   f:['자리에 머물기','플레이메이커 지정'], l:['포지션 자유']},
+  {r:'어드밴스드 플레이메이커 (AP)', f:['위험한 패스','플레이메이커 지정'], l:[]},
+  {r:'박스 투 박스 (BBM)',           f:['포지션 자유'], l:['자리에 머물기']},
+  {r:'센트럴 MF (CM)',               f:[], l:[]},
+  {r:'메짤라 (Mez)',                 f:['넓게 위치','측면 침투'], l:['좁게 위치','자리에 머물기']},
+  {r:'윙어 (W)',                     f:['넓게 위치','외곽 돌파'], l:['좁게 위치','중앙 컷인']},
+  {r:'인사이드 포워드 (IF)',         f:['중앙으로 컷인'], l:['외곽 돌파']},
+  {r:'어드밴스드 포워드 (AF)',       f:['측면 침투'], l:['수비 라인으로 내려오기']},
+  {r:'포처 (P)',                     f:['크로스 적게','드리블 적게'], l:['포지션 자유']},
 ];
 
 const MENTALITIES = ['매우 수비적','수비적','균형','긍정적','공격적','매우 공격적'];
 
 const PRESETS = {
-  '4-3-3':   {DF:['LB','LCB','RCB','RB'], DM:[], M:['LCM','CM','RCM'], AM:['AML','AMR'], ST:['ST']},
-  '4-2-3-1': {DF:['LB','LCB','RCB','RB'], DM:['LDMC','RDMC'], M:[], AM:['AML','CAM','AMR'], ST:['ST']}
+  '4-4-2':   {DF:['LB','LCB','RCB','RB'],      DM:[],               M:['LM','LCM','RCM','RM'],    AM:[],                  ST:['LST','RST']},
+  '4-3-3':   {DF:['LB','LCB','RCB','RB'],      DM:[],               M:['LCM','CM','RCM'],          AM:['AML','AMR'],       ST:['ST']},
+  '4-2-3-1': {DF:['LB','LCB','RCB','RB'],      DM:['LDMC','RDMC'],  M:[],                          AM:['AML','CAM','AMR'], ST:['ST']},
+  '4-1-4-1': {DF:['LB','LCB','RCB','RB'],      DM:['DMC'],          M:['LM','LCM','RCM','RM'],    AM:[],                  ST:['ST']},
+  '3-5-2':   {DF:['LCB','CB','RCB'],           DM:['WBL','DMC','WBR'], M:['LCM','RCM'],           AM:[],                  ST:['LST','RST']},
+  '3-4-3':   {DF:['LCB','CB','RCB'],           DM:['WBL','WBR'],    M:['LCM','RCM'],               AM:['AML','AMR'],       ST:['ST']},
+  '5-3-2':   {DF:['LB','LCB','CB','RCB','RB'], DM:[],               M:['LCM','CM','RCM'],          AM:[],                  ST:['LST','RST']},
+  '4-5-1':   {DF:['LB','LCB','RCB','RB'],      DM:[],               M:['LM','LCM','CM','RCM','RM'],AM:[],                 ST:['ST']},
+  '4-3-2-1': {DF:['LB','LCB','RCB','RB'],      DM:[],               M:['LCM','CM','RCM'],          AM:['LCAM','RCAM'],     ST:['ST']},
+  '4-2-4':   {DF:['LB','LCB','RCB','RB'],      DM:['LDMC','RDMC'],  M:[],                          AM:['AML','AMR'],       ST:['LST','RST']},
+  '3-4-1-2': {DF:['LCB','CB','RCB'],           DM:['WBL','WBR'],    M:['LCM','RCM'],               AM:['CAM'],             ST:['LST','RST']},
+  '4-4-1-1': {DF:['LB','LCB','RCB','RB'],      DM:[],               M:['LM','LCM','RCM','RM'],    AM:['CAM'],             ST:['ST']},
 };
 
-const PI_CATS_IP = {
-  '패스':        ['더 짧은 패스','다이렉트 패스','위험한 패스 감수','안전하게 패스'],
-  '위치·이동':   ['앞으로 전진','자리에 머물기','포지션 자유','중앙으로 컷인','측면 침투'],
-};
-const PI_CATS_OOP = PI_CATS_IP; // 근본 역할 통일로 지침도 통일
-
-const NAMES = {
-  GK:'골키퍼', LB:'좌측 FB', LCB:'좌측 CB', CB:'센터백', RCB:'우측 CB', RB:'우측 FB',
-  LDMC:'좌측 DM', DMC:'중앙 DM', RDMC:'우측 DM',
-  LM:'좌측 MF', LCM:'좌측 CM', CM:'중앙 MF', RCM:'우측 CM', RM:'우측 MF',
-  AML:'LW', CAM:'공격 MF', AMR:'RW', ST:'스트라이커'
+const DEF_NAMES = {
+  GK:'골키퍼',LB:'좌측 FB',LCB:'좌측 CB',CB:'센터백',RCB:'우측 CB',RB:'우측 FB',
+  LDMC:'좌측 DM',DMC:'중앙 DM',RDMC:'우측 DM',WBL:'좌측 WB',WBR:'우측 WB',
+  LM:'좌측 MF',LCM:'좌측 CM',CM:'중앙 MF',RCM:'우측 CM',RM:'우측 MF',
+  AML:'LW',LCAM:'좌측 AM',CAM:'공격 MF',RCAM:'우측 AM',AMR:'RW',
+  LST:'좌측 ST',ST:'스트라이커',RST:'우측 ST',
 };
 
-/* ════════ STATE ════════ */
-/* ════════ 최신 버전 호환 STATE ════════ */
+const PI_CATS = {
+  '패스':      ['더 짧은 패스','다이렉트 패스','위험한 패스','안전하게 패스'],
+  '위치·이동': ['앞으로 전진','자리에 머물기','포지션 자유','중앙으로 컷인','측면 침투'],
+};
+
+/* ═══════════════════════════════════════════════════
+   STATE
+   ─────────────────────────────────────────────────
+   players: 고정 11명 배열, 절대 재정렬하지 않음
+     인덱스 0 = GK, 1~10 = 순서대로
+     { name, ipRole, oopRole, ipPi, oopPi }
+
+   ip.slots / oop.slots: 길이 11 배열
+     slots[i] = slotId (i번 선수가 위치할 슬롯)
+     → "슬롯 i번" = players[i], 항상 1:1 대응
+
+   드래그 = slots 배열 안에서 두 인덱스의 slotId 교환
+   이름 수정 = players[i].name 수정, IP·OOP 즉시 공유
+═══════════════════════════════════════════════════ */
 let state = {
-  // 모든 선수의 이름만 따로 모아서 관리하는 장부
-  // 여기에 값이 없으면 코드가 자동으로 sid(포지션명)를 이름으로 출력함
-  playerData: {}, 
-
-  // 공 소유 시 (In Possession) 전술 데이터
-  ip: { 
-    formation: '4-3-3', 
-    players: {} // { 'ST': { role: '...', pi: {} }, ... }
-  },
-
-  // 공 미소유 시 (Out Of Possession) 전술 데이터
-  oop: { 
-    formation: '4-3-3', 
-    players: {} 
-  },
-
-  // 팀 전체 성향
-  mentality: '균형'
+  players: [],   // 11명, 인덱스 고정
+  ip:  { formation:'4-3-3', slots:[] }, // slots[i] = slotId
+  oop: { formation:'4-3-3', slots:[] },
+  mentality: '균형',
 };
-  
+
+// 포메이션 이름 → slotId 배열 11개 (GK 포함, GK 마지막→맨 앞)
+function presetSlots(name) {
+  const pre = PRESETS[name];
+  const order = ['GK'];
+  ['DF','DM','M','AM','ST'].forEach(row => (pre[row]||[]).forEach(id => order.push(id)));
+  return order; // 항상 길이 11
+}
+
+// 최초 초기화: players 11명 생성, ip/oop slots 세팅
+function initState(formation) {
+  const slots = presetSlots(formation);
+  state.players = slots.map(slotId => {
+    const roles = STANDARD_ROLES[slotId] || ['기본'];
+    return {
+      name:    DEF_NAMES[slotId] || slotId,
+      ipRole:  roles[0],
+      oopRole: roles[0],
+      ipPi:    {},
+      oopPi:   {},
+    };
+  });
+  state.ip  = { formation, slots: [...slots] };
+  state.oop = { formation, slots: [...slots] };
+}
+
+/* ═══════════════════════════════════════════════════
+   포메이션 변경
+   ─────────────────────────────────────────────────
+   핵심 규칙: players 배열은 절대 건드리지 않는다.
+   오직 phase.slots 배열만 교체.
+
+   새 포메이션의 슬롯 수가 다르면 나머지 선수는
+   기존 슬롯(없어진 자리)에 그대로 두되,
+   슬롯 ID만 새 것으로 덮어쓴다.
+   → 단순히: 새 slots 배열을 그대로 쓴다.
+     선수는 인덱스 그대로, 슬롯 ID만 업데이트.
+═══════════════════════════════════════════════════ */
+function changeFormation(name, phase) {
+  const newSlots = presetSlots(name);
+  // 그냥 새 슬롯 배열로 교체. players는 안 건드림.
+  state[phase].formation = name;
+  state[phase].slots = [...newSlots];
+  selIdx[phase] = null;
+  closeEditor(phase);
+  renderPitch(phase);
+}
+
 let currentPhase = 'ip';
-let selSlot = { ip:null, oop:null };
+let selIdx = { ip: null, oop: null };
+let interactMode = 'edit';
+let dragPlayerIdx = null;
 
-// ✨ 터치/드래그 모드 분리
-let interactMode = 'edit'; // 'edit' 또는 'drag'
-
-/* ════════ INIT ════════ */
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
 window.addEventListener('load', () => {
-  buildPresets(); buildMentality();
-  applyPreset('4-3-3', 'ip'); applyPreset('4-3-3', 'oop');
-  document.getElementById('pedCloseIP').addEventListener('click',  () => { selSlot.ip  = null; closeEditor('ip');  renderPitch('ip'); });
-  document.getElementById('pedCloseOOP').addEventListener('click', () => { selSlot.oop = null; closeEditor('oop'); renderPitch('oop'); });
+  initState('4-3-3');
+  buildMentality();
+  buildSetupPresets();
+  buildBasePresets();
+  renderPitch('ip');
+  renderPitch('oop');
+  renderSaves();
+
+  document.getElementById('pedCloseIP').addEventListener('click', () => {
+    selIdx.ip = null; closeEditor('ip'); renderPitch('ip');
+  });
+  document.getElementById('pedCloseOOP').addEventListener('click', () => {
+    selIdx.oop = null; closeEditor('oop'); renderPitch('oop');
+  });
 });
 
-/* ════════ MODE TOGGLE ════════ */
+/* ═══════════════════════════════════════════════════
+   SETUP PRESETS
+═══════════════════════════════════════════════════ */
+function buildSetupPresets() {
+  ['ip','oop'].forEach(phase => {
+    const g = document.getElementById('presetGrid' + (phase==='ip'?'IP':'OOP'));
+    g.innerHTML = '';
+    Object.keys(PRESETS).forEach(f => {
+      const b = document.createElement('button');
+      b.className = 'pbtn' + (f === state[phase].formation ? ' on' : '');
+      b.textContent = f;
+      b.addEventListener('click', () => {
+        changeFormation(f, phase);
+        g.querySelectorAll('.pbtn').forEach(x => x.classList.toggle('on', x.textContent === f));
+      });
+      g.appendChild(b);
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   BASE FORMATION TAB
+═══════════════════════════════════════════════════ */
+let baseFormationName = '4-3-3';
+
+function buildBasePresets() {
+  const g = document.getElementById('basePresetGrid');
+  g.innerHTML = '';
+  Object.keys(PRESETS).forEach(f => {
+    const b = document.createElement('button');
+    b.className = 'base-pbtn' + (f === baseFormationName ? ' on' : '');
+    b.innerHTML = f + '<small>' + getFormationDesc(f) + '</small>';
+    b.dataset.f = f;
+    b.addEventListener('click', () => {
+      baseFormationName = f;
+      g.querySelectorAll('.base-pbtn').forEach(x => x.classList.toggle('on', x.dataset.f === f));
+    });
+    g.appendChild(b);
+  });
+}
+
+function getFormationDesc(f) {
+  const pre = PRESETS[f];
+  const total = ['DF','DM','M','AM','ST'].reduce((s,r) => s+(pre[r]||[]).length, 0);
+  return `필드 ${total}명`;
+}
+
+function syncBoth() {
+  changeFormation(baseFormationName, 'ip');
+  changeFormation(baseFormationName, 'oop');
+  refreshSetupButtons('ip'); refreshSetupButtons('oop');
+  document.getElementById('syncResult').innerHTML =
+    `<div class="base-synced">✅ IP + OOP 모두 <strong>${baseFormationName}</strong>으로 동기화!</div>`;
+  showToast(`${baseFormationName} 양쪽 모두 적용! ✅`);
+}
+
+function syncOne(phase) {
+  changeFormation(baseFormationName, phase);
+  refreshSetupButtons(phase);
+  const label = phase === 'ip' ? '⚽ 공 소유 시' : '🛡 공 미소유 시';
+  document.getElementById('syncResult').innerHTML =
+    `<div class="base-synced">✅ ${label} → <strong>${baseFormationName}</strong> 적용!</div>`;
+  showToast(`${baseFormationName} ${label} 적용! ✅`);
+}
+
+function refreshSetupButtons(phase) {
+  const g = document.getElementById('presetGrid' + (phase==='ip'?'IP':'OOP'));
+  if (!g) return;
+  g.querySelectorAll('.pbtn').forEach(b => b.classList.toggle('on', b.textContent === state[phase].formation));
+}
+
+/* ═══════════════════════════════════════════════════
+   MENTALITY
+═══════════════════════════════════════════════════ */
+function buildMentality() {
+  const row = document.getElementById('mentalityRow');
+  row.innerHTML = '';
+  MENTALITIES.forEach(m => {
+    const b = document.createElement('button');
+    b.className = 'mchip' + (m === state.mentality ? ' on' : '');
+    b.textContent = m;
+    b.addEventListener('click', () => {
+      state.mentality = m;
+      row.querySelectorAll('.mchip').forEach(x => x.classList.toggle('on', x.textContent === m));
+    });
+    row.appendChild(b);
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   INTERACTION MODE
+═══════════════════════════════════════════════════ */
 function setInteractionMode(mode, btn) {
   interactMode = mode;
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
-  
-  // 모든 토큰의 draggable 속성을 모드에 맞게 업데이트
-  document.querySelectorAll('.token').forEach(tk => {
-    tk.draggable = (mode === 'drag');
-  });
-  
-  // 편집 창 닫기 및 선택 해제
-  selSlot.ip = null; selSlot.oop = null;
+  selIdx.ip = null; selIdx.oop = null;
   closeEditor('ip'); closeEditor('oop');
   renderPitch('ip'); renderPitch('oop');
 }
 
 function switchPhase(phase) {
   currentPhase = phase;
-  document.getElementById('fptab-ip').classList.toggle('on',  phase === 'ip');
-  document.getElementById('fptab-oop').classList.toggle('on', phase === 'oop');
-  document.getElementById('phase-ip').classList.toggle('on',  phase === 'ip');
-  document.getElementById('phase-oop').classList.toggle('on', phase === 'oop');
+  document.getElementById('fptab-ip').classList.toggle('on',  phase==='ip');
+  document.getElementById('fptab-oop').classList.toggle('on', phase==='oop');
+  document.getElementById('phase-ip').classList.toggle('on',  phase==='ip');
+  document.getElementById('phase-oop').classList.toggle('on', phase==='oop');
 }
 
-function buildPresets() {
-  ['ip','oop'].forEach(phase => {
-    const g = document.getElementById('presetGrid' + (phase === 'ip' ? 'IP' : 'OOP'));
-    Object.keys(PRESETS).forEach(f => {
-      const b = document.createElement('button');
-      b.className = 'pbtn' + (f === state[phase].formation ? ' on' : '');
-      b.textContent = f;
-      b.addEventListener('click', () => applyPreset(f, phase));
-      g.appendChild(b);
-    });
-  });
-}
-
-function applyPreset(name, phase) {
-  state[phase].formation = name;
-  const pre = PRESETS[name];
-  const np = {};
-  np['GK'] = state[phase].players['GK'] || {name:'골키퍼', role:'골키퍼 (GK)', pi:{}};
-  for (const [row, ids] of Object.entries(pre)) {
-    ids.forEach(id => { 
-      const rolesList = STANDARD_ROLES[id] || ['기본'];
-      np[id] = state[phase].players[id] || { name: NAMES[id]||id, role: rolesList[0], pi: {} }; 
-    });
-  }
-  state[phase].players = np;
-  selSlot[phase] = null;
-  closeEditor(phase);
-  renderPitch(phase);
-}
-
-function buildMentality() {
-  const row = document.getElementById('mentalityRow');
-  MENTALITIES.forEach(m => {
-    const b = document.createElement('button');
-    b.className = 'mchip' + (m === state.mentality ? ' on' : '');
-    b.textContent = m;
-    b.addEventListener('click', () => { state.mentality = m; document.querySelectorAll('.mchip').forEach(x => x.classList.toggle('on', x.textContent === m)); });
-    row.appendChild(b);
-  });
-}
-
-function getPlayerName(slotId) {
-  if (state.ip.players[slotId]) return state.ip.players[slotId].name;
-  if (state.oop.players[slotId]) return state.oop.players[slotId].name;
-  return slotId;
-}
-
-/* ════════ PITCH RENDER & EVENTS ════════ */
+/* ═══════════════════════════════════════════════════
+   PITCH RENDER
+   ─────────────────────────────────────────────────
+   state[phase].slots[i] = slotId
+   state.players[i]      = 선수 데이터
+   → i번 선수를 slotId 위치에 그린다.
+   이름은 players[i].name 공유 (IP/OOP 무관)
+═══════════════════════════════════════════════════ */
 function renderPitch(phase) {
   const suffix = phase === 'ip' ? 'IP' : 'OOP';
   const SL = document.getElementById('slotsLayer' + suffix);
   const TL = document.getElementById('tokensLayer' + suffix);
   SL.innerHTML = ''; TL.innerHTML = '';
-  const phaseState = state[phase];
+  const slots   = state[phase].slots;
+  const roleKey = phase === 'ip' ? 'ipRole' : 'oopRole';
 
-  // 슬롯 렌더링
-  SLOTS.forEach(def => {
-    const hasP = !!phaseState.players[def.id];
-    const slot = document.createElement('div');
-    slot.className = 'slot' + (hasP ? ' has-player' : '');
-    slot.style.left = def.x + '%'; slot.style.top = def.y + '%';
-    slot.dataset.slot = def.id;
-    
-    // 데스크탑 드래그 이벤트 (모드가 드래그일때만)
-    slot.addEventListener('dragover', e => { if(interactMode==='drag'){ e.preventDefault(); slot.classList.add('drag-over'); }});
-    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
-    slot.addEventListener('drop', e => { if(interactMode==='drag'){ e.preventDefault(); slot.classList.remove('drag-over'); handleDrop(def.id, phase); }});
-    SL.appendChild(slot);
-  });
-
-  // 토큰 렌더링
-  Object.entries(phaseState.players).forEach(([sid, p]) => {
-    const def = SLOTS.find(d => d.id === sid);
+  slots.forEach((slotId, playerIdx) => {
+    const def = ALL_SLOTS.find(d => d.id === slotId);
     if (!def) return;
 
+    /* ── 슬롯 ── */
+    const slot = document.createElement('div');
+    slot.className = 'slot has-player';
+    slot.style.left = def.x + '%';
+    slot.style.top  = def.y + '%';
+    slot.dataset.playerIdx = playerIdx;
+
+    slot.addEventListener('dragover', e => {
+      if (interactMode !== 'drag') return;
+      e.preventDefault(); slot.classList.add('drag-over');
+    });
+    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+    slot.addEventListener('drop', e => {
+      if (interactMode !== 'drag') return;
+      e.preventDefault(); slot.classList.remove('drag-over');
+      handleDrop(playerIdx, phase);
+    });
+    SL.appendChild(slot);
+
+    /* ── 토큰 ── */
+    const p = state.players[playerIdx];
+    if (!p) return;
+    const isGK  = slotId === 'GK';
+    const isSel = selIdx[phase] === playerIdx;
+
     const tk = document.createElement('div');
-    tk.className = 'token' + (selSlot[phase] === sid ? ' selected' : '');
-    tk.style.left = def.x + '%'; tk.style.top = def.y + '%';
-    tk.draggable = (interactMode === 'drag'); // 설정된 모드에 따라 결정
-    tk.dataset.slot = sid;
-    
-    const roleShort = (p.role || '').match(/\(([^)]+)\)/);
-    
+    tk.className = 'token' + (isGK ? ' gk' : '') + (isSel ? ' selected' : '');
+    tk.style.left = def.x + '%';
+    tk.style.top  = def.y + '%';
+    tk.dataset.playerIdx = playerIdx;
+    tk.draggable = (interactMode === 'drag');
+
+    const role = p[roleKey] || '';
+    const roleShort = role.match(/\(([^)]+)\)/);
+
     tk.innerHTML = `
       <div class="token-circle">
-        <div class="pos-abbr">${sid}</div>
+        <div class="pos-abbr">${slotId}</div>
         <div class="role-badge ${phase==='ip'?'ip-color':'oop-color'}">${roleShort ? roleShort[1] : ''}</div>
       </div>
-      <div class="token-name">${phase === 'ip' ? p.name : getPlayerName(sid)}</div>
-      <div class="token-role">${p.role || ''}</div>
+      <div class="token-name">${p.name}</div>
+      <div class="token-role">${role}</div>
     `;
 
-    // 1. 데스크탑 클릭 이벤트
     tk.addEventListener('click', e => {
       if (interactMode === 'drag') return;
       e.stopPropagation();
-      handleTokenClick(sid, phase);
+      handleTokenClick(playerIdx, phase);
     });
 
-    // 2. 데스크탑 드래그 이벤트
     tk.addEventListener('dragstart', e => {
       if (interactMode !== 'drag') { e.preventDefault(); return; }
-      dragSrc = sid;
-      e.dataTransfer.setData('text/plain', sid);
+      dragPlayerIdx = playerIdx;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', String(playerIdx));
       setTimeout(() => tk.classList.add('dragging'), 0);
     });
     tk.addEventListener('dragend', () => {
       if (interactMode !== 'drag') return;
-      dragSrc = null;
       document.querySelectorAll('.slot.drag-over').forEach(s => s.classList.remove('drag-over'));
+      dragPlayerIdx = null;
       renderPitch(phase);
     });
 
-    // 3. 모바일 터치 이벤트 (역할/드래그 충돌 완벽 해결)
-    let tActive = false, tStartX = 0, tStartY = 0;
-    
+    /* 모바일 터치 */
+    let tActive = false;
     tk.addEventListener('touchstart', e => {
-      if (interactMode === 'edit') return; // 편집 모드면 드래그 로직 무시
-      tActive = true; dragSrc = sid;
-      const t = e.touches[0];
-      tStartX = t.clientX; tStartY = t.clientY;
+      if (interactMode === 'edit') return;
+      tActive = true; dragPlayerIdx = playerIdx;
       tk.classList.add('dragging');
-    }, {passive:true});
+    }, { passive: true });
 
     tk.addEventListener('touchmove', e => {
       if (interactMode === 'edit' || !tActive) return;
       e.preventDefault();
       const t = e.touches[0];
       document.querySelectorAll('.slot').forEach(s => s.classList.remove('drag-over'));
-      const nearest = findNearestSlot(t.clientX, t.clientY, 44);
+      const nearest = findNearestSlot(t.clientX, t.clientY, 52);
       if (nearest) nearest.classList.add('drag-over');
-    }, {passive:false});
+    }, { passive: false });
 
     tk.addEventListener('touchend', e => {
-      // 편집 모드일 때: 터치가 끝나면 곧바로 창 열기 (클릭과 동일)
       if (interactMode === 'edit') {
-        e.preventDefault(); // 기본 클릭 이벤트가 두 번 터지는 것 방지
-        e.stopPropagation();
-        handleTokenClick(sid, phase);
+        e.preventDefault(); e.stopPropagation();
+        handleTokenClick(playerIdx, phase);
         return;
       }
-      
-      // 드래그 모드일 때: 드롭 처리
       if (!tActive) return;
       tActive = false;
       tk.classList.remove('dragging');
       document.querySelectorAll('.slot.drag-over').forEach(s => s.classList.remove('drag-over'));
       const t = e.changedTouches[0];
-      const nearest = findNearestSlot(t.clientX, t.clientY, 50);
-      if (nearest) handleDrop(nearest.dataset.slot, phase);
-      dragSrc = null;
+      const nearest = findNearestSlot(t.clientX, t.clientY, 56);
+      if (nearest) handleDrop(Number(nearest.dataset.playerIdx), phase);
+      dragPlayerIdx = null;
       renderPitch(phase);
     });
 
@@ -624,17 +740,39 @@ function renderPitch(phase) {
   });
 }
 
-// 클릭/터치 시 에디터 열고 닫는 공통 함수
-function handleTokenClick(sid, phase) {
-  if (selSlot[phase] === sid) {
-    selSlot[phase] = null;
+/* ═══════════════════════════════════════════════════
+   TOKEN CLICK
+═══════════════════════════════════════════════════ */
+function handleTokenClick(playerIdx, phase) {
+  if (selIdx[phase] === playerIdx) {
+    selIdx[phase] = null;
     closeEditor(phase);
     renderPitch(phase);
   } else {
-    selSlot[phase] = sid;
+    selIdx[phase] = playerIdx;
     renderPitch(phase);
-    openEditor(sid, phase);
+    openEditor(playerIdx, phase);
   }
+}
+
+/* ═══════════════════════════════════════════════════
+   DROP HANDLER
+   ─────────────────────────────────────────────────
+   드래그: 해당 phase의 slots 배열에서 slotId만 교환.
+   players 배열은 건드리지 않음.
+   → 선수가 자리를 바꾸는 게 아니라,
+     슬롯 위치가 바뀌는 것.
+═══════════════════════════════════════════════════ */
+function handleDrop(toPlayerIdx, phase) {
+  if (dragPlayerIdx === null || dragPlayerIdx === toPlayerIdx) return;
+  const slots = state[phase].slots;
+  // 두 인덱스의 slotId 교환
+  [slots[dragPlayerIdx], slots[toPlayerIdx]] = [slots[toPlayerIdx], slots[dragPlayerIdx]];
+
+  if (selIdx[phase] === dragPlayerIdx) selIdx[phase] = toPlayerIdx;
+  dragPlayerIdx = null;
+  renderPitch(phase);
+  if (selIdx[phase] !== null) openEditor(selIdx[phase], phase);
 }
 
 function findNearestSlot(cx, cy, maxDist) {
@@ -647,54 +785,47 @@ function findNearestSlot(cx, cy, maxDist) {
   return best;
 }
 
-let dragSrc = null;
-function handleDrop(toId, phase) {
-  if (!dragSrc || dragSrc === toId) return;
-  const fp = state[phase].players[dragSrc];
-  const tp = state[phase].players[toId];
-  if (!fp) return;
-  if (tp) state[phase].players[dragSrc] = tp;
-  else delete state[phase].players[dragSrc];
-  state[phase].players[toId] = fp;
-  if (selSlot[phase] === dragSrc) selSlot[phase] = toId;
-  dragSrc = null;
-  renderPitch(phase);
-  if (selSlot[phase]) openEditor(selSlot[phase], phase);
-}
-
-/* ════════ EDITOR ════════ */
-function openEditor(sid, phase) {
-  const p = state[phase].players[sid];
+/* ═══════════════════════════════════════════════════
+   PLAYER EDITOR
+═══════════════════════════════════════════════════ */
+function openEditor(playerIdx, phase) {
+  const p = state.players[playerIdx];
   if (!p) return;
+  const slotId    = state[phase].slots[playerIdx];
+  const roleKey   = phase === 'ip' ? 'ipRole' : 'oopRole';
+  const piKey     = phase === 'ip' ? 'ipPi'   : 'oopPi';
+  const rolesList = STANDARD_ROLES[slotId] || ['기본'];
+  const rd = ROLE_DATA.find(r => r.r === p[roleKey]) || { f:[], l:[] };
 
-  const rolesList = STANDARD_ROLES[sid] || ['기본'];
-  const rd = ROLE_DATA.find(r => r.r === p.role) || {f:[], l:[]};
-  const pName = state.playerData[sid] ? state.playerData[sid].name : (NAMES[sid] || sid);
-
-  let html = `<div style="font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--acc2);margin-bottom:8px;">${sid} 설정</div>`;
-
-  // 선수 이름 입력 필드 (oninput을 사용해 실시간 동기화)
-  html += `<div class="ped-field" style="margin-bottom:10px;">
-    <div class="ped-label">선수 이름</div>
-    <input class="ped-input" type="text" value="${pName}" oninput="upName('${sid}', this.value)" placeholder="이름 입력">
+  const color = phase === 'ip' ? 'var(--acc2)' : 'var(--red)';
+  let html = `<div style="font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:${color};margin-bottom:8px;">
+    #${playerIdx+1} ${slotId} 설정
   </div>`;
 
-  // 역할 선택
+  // 이름: players[playerIdx].name 공유 (IP/OOP 양쪽에 즉시 반영)
   html += `<div class="ped-field" style="margin-bottom:10px;">
-    <div class="ped-label">역할</div>
-    <select class="ped-select" onchange="upRole('${sid}','${phase}',this.value)">
-      ${rolesList.map(r => `<option value="${r}" ${r === p.role ? 'selected' : ''}>${r}</option>`).join('')}
+    <div class="ped-label">선수 이름 <span style="color:var(--acc);font-size:9px;">★ IP/OOP 공유</span></div>
+    <input class="ped-input" type="text" value="${p.name}"
+      oninput="upName(${playerIdx}, this.value)" placeholder="이름 입력">
+  </div>`;
+
+  // 역할: phase별 독립
+  html += `<div class="ped-field" style="margin-bottom:10px;">
+    <div class="ped-label">역할 (${phase === 'ip' ? '공 소유 시' : '공 미소유 시'})</div>
+    <select class="ped-select" onchange="upRole(${playerIdx},'${phase}',this.value)">
+      ${rolesList.map(r => `<option value="${r}" ${r===p[roleKey]?'selected':''}>${r}</option>`).join('')}
     </select>
   </div>`;
-  
-  const piCats = phase === 'ip' ? PI_CATS_IP : PI_CATS_OOP;
-  for (const [cat, opts] of Object.entries(piCats)) {
+
+  // 개인 지침: phase별 독립
+  for (const [cat, opts] of Object.entries(PI_CATS)) {
     html += `<div class="pi-sec"><div class="pi-sec-label">${cat}</div><div class="pi-chips">`;
     opts.forEach(o => {
-      const isF = rd.f.includes(o), isL = rd.l.includes(o), isOn = p.pi[o];
+      const isF = rd.f.includes(o), isL = rd.l.includes(o), isOn = p[piKey][o];
       let cls = 'pichip';
       if (isF) cls += ' forced'; else if (isL) cls += ' locked'; else if (isOn) cls += ' on';
-      html += `<button class="${cls}" ${(isF||isL) ? 'disabled' : ''} onclick="togglePI('${sid}','${phase}','${o}',this)">${o}</button>`;
+      html += `<button class="${cls}" ${(isF||isL)?'disabled':''}
+        onclick="togglePI(${playerIdx},'${phase}','${o}',this)">${o}</button>`;
     });
     html += `</div></div>`;
   }
@@ -704,91 +835,55 @@ function openEditor(sid, phase) {
   document.getElementById('playerEditor' + suffix).classList.add('open');
 }
 
-  // 선수 이름 수정 (어느 페이즈에서 수정하든 playerData를 건드림)
-function upName(sid, val) {
-  if (!state.playerData[sid]) state.playerData[sid] = {};
-  state.playerData[sid].name = val;
-
-  // 화면에 렌더링된 모든 같은 슬롯의 이름 텍스트 즉시 변경 (동기화)
-  document.querySelectorAll(`.token[data-slot="${sid}"] .token-name`).forEach(el => {
-    el.textContent = val;
-  });
-}
-
-// 피치 렌더링 (이름은 항상 playerData에서 가져옴)
-function renderPitch(phase) {
-  const suffix = phase === 'ip' ? 'IP' : 'OOP';
-  const SL = document.getElementById('slotsLayer' + suffix);
-  const TL = document.getElementById('tokensLayer' + suffix);
-  SL.innerHTML = ''; TL.innerHTML = '';
-  const phaseState = state[phase];
-
-  // 슬롯 렌더링 (기존 로직 동일)
-  SLOTS.forEach(def => {
-    const hasP = !!phaseState.players[def.id];
-    const slot = document.createElement('div');
-    slot.className = 'slot' + (hasP ? ' has-player' : '');
-    slot.style.left = def.x + '%'; slot.style.top = def.y + '%';
-    slot.dataset.slot = def.id;
-    // ... 드래그 이벤트 생략 (기존과 동일)
-    SL.appendChild(slot);
-  });
-
-  // 토큰 렌더링
-  Object.entries(phaseState.players).forEach(([sid, p]) => {
-    const def = SLOTS.find(d => d.id === sid);
-    if (!def) return;
-
-    const tk = document.createElement('div');
-    tk.className = 'token' + (selSlot[phase] === sid ? ' selected' : '');
-    tk.style.left = def.x + '%'; tk.style.top = def.y + '%';
-    tk.draggable = (interactMode === 'drag');
-    tk.dataset.slot = sid; // 동기화를 위한 식별값
-
-    const roleShort = (p.role || '').match(/\(([^)]+)\)/);
-    const pName = state.playerData[sid] ? state.playerData[sid].name : (NAMES[sid] || sid);
-    
-    tk.innerHTML = `
-      <div class="token-circle">
-        <div class="pos-abbr">${sid}</div>
-        <div class="role-badge ${phase==='ip'?'ip-color':'oop-color'}">${roleShort ? roleShort[1] : ''}</div>
-      </div>
-      <div class="token-name">${pName}</div>
-      <div class="token-role">${p.role || ''}</div>
-    `;
-    // ... 터치/클릭 이벤트 생략 (기존과 동일)
-    TL.appendChild(tk);
-  });
-}
-
-
-
 function closeEditor(phase) {
-  const suffix = phase === 'ip' ? 'IP' : 'OOP';
-  document.getElementById('playerEditor' + suffix).classList.remove('open');
+  document.getElementById('playerEditor' + (phase==='ip'?'IP':'OOP')).classList.remove('open');
 }
 
-function upRole(sid, phase, val) {
-  if (!state[phase].players[sid]) return;
-  state[phase].players[sid].role = val;
+/* ─── 이름 수정: players[i].name 하나만 바꿈 → 양 피치 즉시 반영 ─── */
+function upName(playerIdx, val) {
+  state.players[playerIdx].name = val;
+  // IP 피치
+  document.querySelectorAll('#tokensLayerIP .token').forEach(tk => {
+    if (Number(tk.dataset.playerIdx) === playerIdx) {
+      const el = tk.querySelector('.token-name');
+      if (el) el.textContent = val;
+    }
+  });
+  // OOP 피치
+  document.querySelectorAll('#tokensLayerOOP .token').forEach(tk => {
+    if (Number(tk.dataset.playerIdx) === playerIdx) {
+      const el = tk.querySelector('.token-name');
+      if (el) el.textContent = val;
+    }
+  });
+}
+
+function upRole(playerIdx, phase, val) {
+  const roleKey = phase === 'ip' ? 'ipRole' : 'oopRole';
+  state.players[playerIdx][roleKey] = val;
   renderPitch(phase);
-  openEditor(sid, phase);
+  openEditor(playerIdx, phase);
 }
 
-function togglePI(sid, phase, label, btn) {
-  if (!state[phase].players[sid]) return;
-  state[phase].players[sid].pi[label] = !state[phase].players[sid].pi[label];
-  btn.classList.toggle('on', state[phase].players[sid].pi[label]);
+function togglePI(playerIdx, phase, label, btn) {
+  const piKey = phase === 'ip' ? 'ipPi' : 'oopPi';
+  state.players[playerIdx][piKey][label] = !state.players[playerIdx][piKey][label];
+  btn.classList.toggle('on', state.players[playerIdx][piKey][label]);
 }
+
+/* ═══════════════════════════════════════════════════
+   SCREEN NAV
+═══════════════════════════════════════════════════ */
 function goScreen(id, btn) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
-  document.getElementById('s-'+id).classList.add('on');
+  document.getElementById('s-' + id).classList.add('on');
   document.querySelectorAll('.ntab').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
 }
 
-  /* ════════ SAVE & LOAD SYSTEM ════════ */
-// 토스트 메시지 띄우기
+/* ═══════════════════════════════════════════════════
+   SAVE / LOAD / EXPORT
+═══════════════════════════════════════════════════ */
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -796,41 +891,32 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// 로컬스토리지에 전술 저장
 function doSave() {
   const tName = document.getElementById('tacticName').value.trim() || '나의 전술';
   const saves = JSON.parse(localStorage.getItem('fm26_saves') || '{}');
-  saves[tName] = state; // 현재 state 통째로 저장
+  saves[tName] = JSON.parse(JSON.stringify(state));
   localStorage.setItem('fm26_saves', JSON.stringify(saves));
-  
   showToast(`'${tName}' 저장 완료! 💾`);
-  renderSaves(); // 저장함 목록 갱신
+  renderSaves();
 }
 
-// JSON 파일로 다운로드
 function doExportJSON() {
   const tName = document.getElementById('tacticName').value.trim() || 'tactic';
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
-  const btn = document.createElement('a');
-  btn.setAttribute("href", dataStr);
-  btn.setAttribute("download", `FM26_${tName}.json`);
-  document.body.appendChild(btn);
-  btn.click();
-  btn.remove();
-  showToast("JSON 다운로드 시작! ⬇️");
+  const a = document.createElement('a');
+  a.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state, null, 2)));
+  a.setAttribute('download', `FM26_${tName}.json`);
+  document.body.appendChild(a); a.click(); a.remove();
+  showToast('JSON 다운로드! ⬇️');
 }
 
-// 저장함 목록 렌더링
 function renderSaves() {
   const saves = JSON.parse(localStorage.getItem('fm26_saves') || '{}');
-  const list = document.getElementById('saveList');
-  if(!list) return;
-
-  if (Object.keys(saves).length === 0) {
+  const list  = document.getElementById('saveList');
+  if (!list) return;
+  if (!Object.keys(saves).length) {
     list.innerHTML = '<div class="empty-msg">저장된 전술이 없습니다.</div>';
     return;
   }
-
   list.innerHTML = '';
   for (const [name, data] of Object.entries(saves)) {
     const item = document.createElement('div');
@@ -841,50 +927,32 @@ function renderSaves() {
         <div class="si-meta">IP: ${data.ip.formation} / OOP: ${data.oop.formation} / ${data.mentality}</div>
       </div>
       <button class="ibtn" onclick="loadSave('${name}')">불러오기</button>
-      <button class="ibtn oop-color" style="border-color:var(--red)" onclick="deleteSave('${name}')">삭제</button>
+      <button class="ibtn" style="border-color:var(--red);color:var(--red);" onclick="deleteSave('${name}')">삭제</button>
     `;
     list.appendChild(item);
   }
 }
 
-// 전술 불러오기
 function loadSave(name) {
   const saves = JSON.parse(localStorage.getItem('fm26_saves') || '{}');
-  if(saves[name]) {
-    state = saves[name]; // 상태 덮어씌우기
-    document.getElementById('tacticName').value = name;
-    
-    // 멘탈리티 버튼 UI 갱신
-    document.querySelectorAll('.mchip').forEach(x => {
-      x.classList.toggle('on', x.textContent === state.mentality);
-    });
-    
-    // 화면 재렌더링
-    renderPitch('ip');
-    renderPitch('oop');
-    showToast(`'${name}' 불러오기 완료! ✅`);
-    
-    // 포메이션 탭으로 자동 이동
-    const fmTabBtn = document.querySelectorAll('.ntab')[1];
-    goScreen('formation', fmTabBtn);
-  }
+  if (!saves[name]) return;
+  state = saves[name];
+  document.getElementById('tacticName').value = name;
+  buildMentality();
+  renderPitch('ip');
+  renderPitch('oop');
+  showToast(`'${name}' 불러오기! ✅`);
+  goScreen('formation', document.querySelectorAll('.ntab')[2]);
 }
 
-// 전술 삭제
 function deleteSave(name) {
-  if(!confirm(`'${name}' 전술을 정말 삭제하시겠습니까?`)) return;
+  if (!confirm(`'${name}' 전술을 삭제하시겠습니까?`)) return;
   const saves = JSON.parse(localStorage.getItem('fm26_saves') || '{}');
   delete saves[name];
   localStorage.setItem('fm26_saves', JSON.stringify(saves));
   showToast(`'${name}' 삭제됨 🗑️`);
   renderSaves();
 }
-
-// 초기화 시 저장 목록도 한 번 불러오도록 설정
-window.addEventListener('load', () => {
-  renderSaves(); 
-});
-
 </script>
 </body>
 </html>
